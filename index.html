@@ -112,7 +112,7 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
   <h1>What do EEG foundation models learn about children's brains?</h1>
   <p class="sub">First result: age prediction from resting EEG in 373 children</p>
   <p>Selin Mutlu, Duke University</p>
-  <p>Working notes, last updated November 1, 2026</p>
+  <p>Working notes, last updated November 2, 2026</p>
   <p class="links"><a href="https://github.com/selinmutlu06/child-eeg-foundation-models" target="_blank" rel="noopener noreferrer">Code</a><a href="https://neuromechanist.github.io/data/hbn" target="_blank" rel="noopener noreferrer">HBN-EEG data</a><a href="https://arxiv.org/abs/2405.18765v1" target="_blank" rel="noopener noreferrer">LaBraM paper</a><a href="https://selinmutlu.com" target="_blank" rel="noopener noreferrer">selinmutlu.com</a></p>
 </header>
 
@@ -253,7 +253,7 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 
 <h2>6. Limitations</h2>
 <ul>
-  <li><b>Age is not autism.</b> These results show that LaBraM embeddings carry developmental information beyond standard features. They do not address autism.</li>
+  <li><b>Age is not autism.</b> These results show that pretrained LaBraM represents developmental information in EEG more usefully than standard features do. They do not address autism.</li>
   <li><b>The baseline is limited.</b> 229 spectral features and a linear model, without connectivity, complexity, or cross-frequency measures. A stronger baseline may reduce the gap.</li>
   <li><b>Residualization is linear and incomplete.</b> Removing standard-feature information with ridge regression leaves some shared variance and ignores nonlinear relationships, so the residual results (section 3.5) are approximate.</li>
   <li><b>The statistical evidence is modest.</b> The main comparisons pass a corrected resampled t-test (p = .047 after Holm correction), but all results come from one dataset. Testing the fitted models on a held-out HBN release would be a stronger check.</li>
