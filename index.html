@@ -52,6 +52,7 @@ a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 
 header h1 { font-size: 2rem; line-height: 1.2; font-weight: 700; margin: 0 0 12px; text-wrap: balance; }
 header p { margin: 0; color: var(--muted); }
+header .sub { font-size: 1.15rem; color: var(--fg); margin: -4px 0 14px; }
 header .links { margin-top: 10px; font-size: 16px; }
 header .links a + a::before { content: "/"; color: var(--faint); margin: 0 8px; display: inline-block; }
 
@@ -109,9 +110,10 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 <div class="page">
 <header>
   <h1>What do EEG foundation models learn about children's brains?</h1>
+  <p class="sub">First result: age prediction from resting EEG in 373 children</p>
   <p>Selin Mutlu, Duke University</p>
   <p>Working notes, last updated November 1, 2026</p>
-  <p class="links"><a href="https://neuromechanist.github.io/data/hbn" target="_blank" rel="noopener noreferrer">HBN-EEG data</a><a href="https://arxiv.org/abs/2405.18765v1" target="_blank" rel="noopener noreferrer">LaBraM paper</a><a href="https://selinmutlu.com" target="_blank" rel="noopener noreferrer">selinmutlu.com</a></p>
+  <p class="links"><a href="https://github.com/selinmutlu06/child-eeg-foundation-models" target="_blank" rel="noopener noreferrer">Code</a><a href="https://neuromechanist.github.io/data/hbn" target="_blank" rel="noopener noreferrer">HBN-EEG data</a><a href="https://arxiv.org/abs/2405.18765v1" target="_blank" rel="noopener noreferrer">LaBraM paper</a><a href="https://selinmutlu.com" target="_blank" rel="noopener noreferrer">selinmutlu.com</a></p>
 </header>
 
 <main>
@@ -125,12 +127,7 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 <h2>1. Motivation</h2>
 <p>Many studies have looked for EEG differences in autism, but the effects that replicate in large samples tend to be small and inconsistent. Most of this work tests features defined in advance, such as power in each frequency band.</p>
 <p>Foundation models are pretrained on large amounts of unlabeled EEG, so they could in principle capture structure that predefined features miss. Their representations are also hard to interpret, and recent work (Tang et al., 2026) suggests that much of what they encode overlaps with spectral power. Before asking whether they carry autism-related information, I wanted to check whether they carry information about children's EEG that standard features do not. Age is a reasonable first target because it has a strong, well-characterized EEG signature and is also a major confound in autism EEG studies.</p>
-<p>The project has three parts:</p>
-<ol>
-  <li><b>Do foundation-model embeddings outperform standard features?</b> Open HBN data with age, the CBCL attention factor, and the p-factor as targets. A first pass is below.</li>
-  <li><b>Do they carry autism-related information?</b> The same comparison with diagnostic labels, likely using movie-watching EEG. This requires the HBN data use agreement.</li>
-  <li><b>What is that information?</b> Sparse autoencoders on the embeddings, with each learned feature compared against known EEG measures.</li>
-</ol>
+<p>This page covers the first step. If the result holds up under a stronger baseline, the next steps are to run the same comparison with autism diagnoses (section 5) and then to use sparse autoencoders to see what the relevant embedding features correspond to.</p>
 
 <h2>2. Data and pipeline</h2>
 <p>HBN collected 128-channel EEG from children and adolescents aged 5 to 21. I used the resting-state task from releases 1 to 3 (405 participants with resting data, 373 after quality control). Each recording went through the same steps:</p>
@@ -204,27 +201,14 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 <p>HBN also includes parent-reported CBCL scores. For the attention factor and the p-factor, all three feature sets had R² near zero (Table 1) with 362 participants. Neither standard features nor LaBraM embeddings predicted these scores from eyes-closed resting EEG. This suggests resting-state EEG may also be limited for autism-related traits, which is consistent with the literature below.</p>
 
 <h2>4. Prior work on autism EEG markers</h2>
-<p>Before applying this to autism, I reviewed the main biomarker studies. In a meta-analysis of 41 studies, relative alpha (lower in autism) and gamma (higher) showed the clearest pooled effects, and several large studies did not find a single resting-state measure useful for classification.</p>
+<p>In a meta-analysis of 41 resting-state studies (Neo et al., 2023), relative alpha (lower in autism) and gamma (higher) showed the clearest pooled effects. Large samples have been less encouraging: LEAP (Garcés et al., 2022, n = 411) found no group differences after correction, and ABC-CT (Webb et al., 2023) found the face-evoked N170 to be a stronger candidate than resting measures. Carson et al. (2024) showed that selecting models for reproducibility gives more stable associations, which is why robustness is reported alongside accuracy here.</p>
 <figure>
   <div class="chart w" id="forest"></div>
-  <figcaption><b>Figure 8.</b> Resting-state power in autism vs. neurotypical groups, from Neo, Foti, Keehn &amp; Kelleher (2023). Hedges' g with 95% CIs. Black is absolute power, blue is relative power, filled markers are p &lt; .05. The relative gamma estimate is based on two studies. The alpha effect was larger with eyes open (g = −0.52) than with eyes closed (g = −0.09).</figcaption>
+  <figcaption><b>Figure 8.</b> Resting-state power in autism vs. neurotypical groups, from Neo, Foti, Keehn &amp; Kelleher (2023). Hedges' g with 95% CIs. Black is absolute power, blue is relative power, filled markers are p &lt; .05. The relative gamma estimate is based on two studies.</figcaption>
 </figure>
-<div class="tbl">
-  <table>
-    <caption><b>Table 2.</b> Large studies relevant to this project.</caption>
-    <thead><tr><th>Study</th><th>Sample</th><th>Finding</th></tr></thead>
-    <tbody>
-      <tr><td><a href="https://link.springer.com/content/pdf/10.1186/s13229-022-00500-x.pdf" target="_blank" rel="noopener noreferrer">Garcés et al. 2022</a> (LEAP)</td><td>212 autistic, 199 NT, ages 6 to 32</td><td>No group differences in alpha peak, power spectrum, or connectivity after correction. Classification accuracy was about 57% and did not generalize to held-out participants.</td></tr>
-      <tr><td><a href="https://ouci.dntb.gov.ua/works/40wwvNy7" target="_blank" rel="noopener noreferrer">Dede et al. 2023</a> (preprint)</td><td>776 participants, 5 studies</td><td>Of 942 resting-state variables, none was a practically useful diagnostic marker.</td></tr>
-      <tr><td><a href="https://scholars.duke.edu/publication/1533828" target="_blank" rel="noopener noreferrer">Webb et al. 2023</a> (ABC-CT)</td><td>280 autistic, 119 TD, ages 6 to 11</td><td>N170 latency to faces was longer in autism (about 210 vs. 197 ms) and was the strongest candidate in the battery. Resting-state results were mixed.</td></tr>
-      <tr><td><a href="https://scholars.duke.edu/publication/1652807" target="_blank" rel="noopener noreferrer">Carson et al. 2024</a></td><td>224 autistic, 69 NT, ages 3 to 8</td><td>Selecting models for reproducibility as well as accuracy gave more stable associations, including higher posterior gamma in autism.</td></tr>
-      <tr><td><a href="https://www.biorxiv.org/content/10.1101/2020.03.06.981415v2.full" target="_blank" rel="noopener noreferrer">Lyons et al. 2020</a> (HBN fMRI)</td><td>28 per group, ages 7 to 12</td><td>During movie watching, autistic children showed lower synchrony with peers in the theory-of-mind network (d = 0.93).</td></tr>
-    </tbody>
-  </table>
-</div>
 
 <h2>5. Next steps</h2>
-<p>For the autism question, I'm planning to use movie-watching EEG rather than resting state. HBN recorded the same participants' EEG while they watched short films, including <i>The Present</i> and <i>Despicable Me</i>. The fMRI result above suggests naturalistic social stimuli may reveal differences that rest does not, and I have not yet found an EEG study that uses HBN's movie recordings in this way.</p>
+<p>For the autism question, I'm planning to use movie-watching EEG rather than resting state. HBN recorded the same participants' EEG while they watched short films, including <i>The Present</i> and <i>Despicable Me</i>. In HBN fMRI, autistic children showed lower synchrony with peers in the theory-of-mind network during a movie (Lyons et al., 2020, d = 0.93), which suggests naturalistic social stimuli may reveal differences that rest does not, and I have not yet found an EEG study that uses HBN's movie recordings in this way.</p>
 <ol>
   <li><b>Strengthen the baseline.</b> Add connectivity and the other feature families from Tang et al. (2026), plus a nonlinear model.</li>
   <li><b>Process the movie EEG.</b> Same pipeline, plus an inter-subject synchrony measure: how closely each participant's EEG follows the group response to the same moment in the film.</li>
