@@ -1,0 +1,15 @@
+{
+ "n": 373,
+ "age_mean": 10.46,
+ "age_sd": 3.456,
+ "baseline_mae_predict_mean": 2.832,
+ "standard": {"r2": 0.4940, "r2_sd": 0.1073, "mae": 1.8500, "mae_sd": 0.1619},
+ "pretrained": {"r2": 0.5943, "r2_sd": 0.0898, "mae": 1.6940, "mae_sd": 0.1557, "top_layer": 3},
+ "random": {"r2": 0.5065, "r2_sd": 0.0735, "mae": 1.9065, "mae_sd": 0.1352, "top_layer": 8},
+ "standard+pretrained": {"r2": 0.6107, "r2_sd": 0.0881, "mae": 1.6662, "mae_sd": 0.1565, "top_layer": 8},
+ "pretrained vs standard": {"mean_diff_r2": 0.1002, "folds_better": 24, "t": 2.676, "p": 0.0132},
+ "pretrained vs random": {"mean_diff_r2": 0.0878, "folds_better": 23, "t": 2.729, "p": 0.0117},
+ "standard+pretrained vs standard": {"mean_diff_r2": 0.1167, "folds_better": 25, "t": 3.251, "p": 0.0034},
+ "standard+pretrained vs pretrained": {"mean_diff_r2": 0.0164, "folds_better": 16, "t": 0.725, "p": 0.4754},
+ "random vs standard": {"mean_diff_r2": 0.0124, "folds_better": 11, "t": 0.320, "p": 0.7520}
+}

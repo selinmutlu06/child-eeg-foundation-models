@@ -6,13 +6,14 @@ Selin Mutlu, Duke University
 
 This project asks whether EEG foundation models capture information about brain development and autism beyond standard spectral features. The first step compares embeddings from pretrained [LaBraM](https://arxiv.org/abs/2405.18765v1), the same architecture with random weights, and 229 standard spectral features for predicting age from eyes-closed resting EEG in 373 children from the [Healthy Brain Network](https://neuromechanist.github.io/data/hbn) (releases 1 to 3).
 
-| Feature set | Nested CV R², age (SD) | Robustness R |
-|---|---|---|
-| Standard spectral features | 0.49 (0.11) | 0.41 |
-| LaBraM, pretrained | 0.59 (0.09) | 0.48 |
-| LaBraM, random weights | 0.51 (0.07) | 0.38 |
+| Feature set | Nested CV R², age (SD) | MAE, years | Robustness R |
+|---|---|---|---|
+| Standard spectral features | 0.49 (0.11) | 1.85 | 0.41 |
+| LaBraM, pretrained | 0.59 (0.09) | 1.69 | 0.48 |
+| LaBraM, random weights | 0.51 (0.07) | 1.91 | 0.38 |
+| Standard + LaBraM pretrained | 0.61 (0.09) | 1.67 | |
 
-Pretrained LaBraM had the higher R² in 24 of 25 test folds against standard features. None of the feature sets predicted the CBCL attention factor or the p-factor (R² near zero, n = 362). Details, figures, and limitations are on the project page.
+Pretrained LaBraM beat standard features in 24 of 25 test folds (corrected resampled t-test p = .013, .047 after Holm correction). Adding standard features to LaBraM did not significantly improve it (p = .48), suggesting LaBraM already captures most of the standard-feature information. None of the feature sets predicted the CBCL attention factor or the p-factor (R² near zero, n = 362). Details, figures, and limitations are on the project page.
 
 ## Repository
 
@@ -21,6 +22,7 @@ index.html                         project page (served by GitHub Pages)
 pipeline/hbn_pipeline.py           download, preprocessing, standard features, LaBraM embeddings
 pipeline/run_release.py            processes one HBN release, one .npz per participant
 pipeline/analyze.py                nested CV, prediction robustness, paired fold comparison
+pipeline/analyze_v3.py             MAE, combined model, corrected resampled t-tests (Colab cell)
 pipeline/hbn_labram_colab.ipynb    runs everything in Google Colab
 results/                           summary tables for the 373-participant analysis
 ```
