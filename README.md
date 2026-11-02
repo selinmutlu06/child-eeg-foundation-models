@@ -13,7 +13,7 @@ This project asks whether EEG foundation models capture information about brain 
 | LaBraM, random weights | 0.51 (0.07) | 1.91 | 0.38 |
 | Standard + LaBraM pretrained | 0.61 (0.09) | 1.67 | |
 
-Pretrained LaBraM beat standard features in 24 of 25 test folds (corrected resampled t-test p = .013, .047 after Holm correction). Adding standard features to LaBraM did not significantly improve it (p = .48), suggesting LaBraM already captures most of the standard-feature information. None of the feature sets predicted the CBCL attention factor or the p-factor (R² near zero, n = 362). Details, figures, and limitations are on the project page.
+Pretrained LaBraM beat standard features in 24 of 25 test folds (corrected resampled t-test p = .013, .047 after Holm correction). Adding standard features to LaBraM did not significantly improve it (p = .48), suggesting LaBraM already captures most of the standard-feature information. After removing what the standard features explain, pretrained and random-weights embeddings kept similar small amounts of age information (R² 0.09 vs. 0.12, p = .45), so the pretraining advantage appears to lie mainly in representing spectral information more usefully rather than in new information. None of the feature sets predicted the CBCL attention factor or the p-factor (R² near zero, n = 362). Details, figures, and limitations are on the project page.
 
 ## Repository
 
@@ -23,6 +23,7 @@ pipeline/hbn_pipeline.py           download, preprocessing, standard features, L
 pipeline/run_release.py            processes one HBN release, one .npz per participant
 pipeline/analyze.py                nested CV, prediction robustness, paired fold comparison
 pipeline/analyze_v3.py             MAE, combined model, corrected resampled t-tests (Colab cell)
+pipeline/analyze_residual.py       residualization test: what is left after removing standard-feature information
 pipeline/hbn_labram_colab.ipynb    runs everything in Google Colab
 results/                           summary tables for the 373-participant analysis
 ```

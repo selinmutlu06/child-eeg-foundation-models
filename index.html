@@ -122,12 +122,12 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
   <figcaption><b>Figure 1.</b> Four seconds of eyes-closed EEG from one 10-year-old in HBN (sub-NDARAM704GKZ), low-passed at 30 Hz. The rhythm in O1 and O2 is posterior alpha.</figcaption>
 </figure>
 
-<p class="abstract">I'm interested in whether EEG foundation models learn information about brain development and autism beyond the spectral features we already measure. As a first test, I predicted age from eyes-closed resting EEG in <b>373 children</b> from the Healthy Brain Network. Embeddings from pretrained LaBraM reached a nested cross-validated <b>R² of 0.59</b>, compared with <b>0.49</b> for standard spectral features and <b>0.51</b> for the same architecture with random weights. That corresponds to a mean absolute error of <b>1.69 years</b> versus <b>1.85 years</b>. Pretrained LaBraM had the higher R² in 24 of 25 test folds (corrected resampled t-test, p = .013). Adding the standard features to LaBraM did not improve it further, which suggests LaBraM already captures most of what those features measure. This suggests the pretrained representations capture some developmental information that band power and aperiodic parameters do not, at least with a linear readout. It is not an autism result. It is a baseline for the autism question.</p>
+<p class="abstract">I'm interested in whether EEG foundation models learn information about brain development and autism beyond the spectral features we already measure. As a first test, I predicted age from eyes-closed resting EEG in <b>373 children</b> from the Healthy Brain Network. Embeddings from pretrained LaBraM reached a nested cross-validated <b>R² of 0.59</b>, compared with <b>0.49</b> for standard spectral features and <b>0.51</b> for the same architecture with random weights. That corresponds to a mean absolute error of <b>1.69 years</b> versus <b>1.85 years</b>. Pretrained LaBraM had the higher R² in 24 of 25 test folds (corrected resampled t-test, p = .013). However, when I removed the information the standard features can explain from the embeddings, pretrained and random-weights LaBraM kept similar amounts of age information (R² 0.09 and 0.12). So the benefit of pretraining seems to come mainly from representing spectral information in a more usable form, not from information the standard features lack. It is not an autism result. It is a baseline for the autism question.</p>
 
 <h2>1. Motivation</h2>
 <p>Many studies have looked for EEG differences in autism, but the effects that replicate in large samples tend to be small and inconsistent. Most of this work tests features defined in advance, such as power in each frequency band.</p>
 <p>Foundation models are pretrained on large amounts of unlabeled EEG, so they could in principle capture structure that predefined features miss. Their representations are also hard to interpret, and recent work (Tang et al., 2026) suggests that much of what they encode overlaps with spectral power. Before asking whether they carry autism-related information, I wanted to check whether they carry information about children's EEG that standard features do not. Age is a reasonable first target because it has a strong, well-characterized EEG signature and is also a major confound in autism EEG studies.</p>
-<p>This page covers the first step. If the result holds up under a stronger baseline, the next steps are to run the same comparison with autism diagnoses (section 5) and then to use sparse autoencoders to see what the relevant embedding features correspond to.</p>
+<p>This page covers the first step. The next steps are to run the same comparison with autism diagnoses (section 5) and then to use sparse autoencoders to see what the relevant embedding features correspond to.</p>
 
 <h2>2. Data and pipeline</h2>
 <p>HBN collected 128-channel EEG from children and adolescents aged 5 to 21. I used the resting-state task from releases 1 to 3 (405 participants with resting data, 373 after quality control). Each recording went through the same steps:</p>
@@ -195,16 +195,32 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 </figure>
 
 <h3>3.4 LaBraM appears to contain most of the standard-feature information</h3>
-<p>To test whether LaBraM adds information beyond the standard features, or simply re-encodes them, I fit a model on both together. Combining them beat standard features alone in all 25 folds (+0.12 R², p = .017 after correction), but it did not meaningfully beat LaBraM alone (+0.02 R², 16 of 25 folds, p = .48). In other words, the standard features add little once LaBraM is included, while LaBraM adds a lot to the standard features. This fits with Tang et al. (2026), who found that foundation-model embeddings encode much of the spectrum, and it suggests LaBraM also carries some age-related information beyond it. Nested selection most often chose layer 8 for the combined model, compared with layer 3 for LaBraM alone.</p>
+<p>To test whether LaBraM adds information beyond the standard features, or simply re-encodes them, I fit a model on both together. Combining them beat standard features alone in all 25 folds (+0.12 R², p = .017 after correction), but it did not meaningfully beat LaBraM alone (+0.02 R², 16 of 25 folds, p = .48). In other words, the standard features add little once LaBraM is included, while LaBraM adds a lot to the standard features. This fits with Tang et al. (2026), who found that foundation-model embeddings encode much of the spectrum. Nested selection most often chose layer 8 for the combined model, compared with layer 3 for LaBraM alone.</p>
 
-<h3>3.5 The difference appeared with a larger sample</h3>
+<h3>3.5 The pretraining advantage is mostly in spectral information</h3>
+<p>The combined model cannot tell whether LaBraM adds new information or just a cleaner version of the spectrum. To separate these, I removed from each embedding everything a ridge regression on the standard features could explain (fit on the training fold only) and predicted age from what was left.</p>
+<div class="tbl">
+  <table>
+    <caption><b>Table 3.</b> Predicting age from residualized features (n = 373, 25 nested folds). p tests whether R² is above zero, using the corrected resampled t-test.</caption>
+    <thead><tr><th>Features</th><th class="r">R² (SD)</th><th class="r">Folds above 0</th><th class="r">p</th></tr></thead>
+    <tbody>
+      <tr><td>Pretrained LaBraM, standard features removed</td><td class="r">0.09 (0.06)</td><td class="r">22 / 25</td><td class="r">.024</td></tr>
+      <tr><td>Random-weights LaBraM, standard features removed</td><td class="r">0.12 (0.09)</td><td class="r">22 / 25</td><td class="r">.024</td></tr>
+      <tr><td>Standard features, pretrained LaBraM removed</td><td class="r">0.17 (0.10)</td><td class="r">25 / 25</td><td class="r">.005</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Both pretrained and random-weights embeddings kept a small amount of age information after the standard features were removed, and the two did not differ (pretrained minus random: −0.03 R², 8 of 25 folds, p = .45). So the leftover signal does not depend on pretraining. It is more likely detail that any convolutional projection of the raw signal picks up and that 229 summary features miss. Since pretrained LaBraM beats random weights by about 0.09 R² overall but not on the residuals, the pretraining advantage appears to sit in the part shared with the standard features. A reasonable reading is that pretraining makes spectral information easier to read out linearly, rather than adding new kinds of information. This is close to the "better spectral estimator" explanation I wanted to rule in or out.</p>
+<p>The third row should be read cautiously. Ridge residualization removes only part of the explainable variance, so some shared information remains in every residual. That likely explains why standard features keep R² = 0.17 after removing LaBraM even though adding them to LaBraM barely helped (section 3.4). A full-resolution spectrum baseline would be a more direct test.</p>
+
+<h3>3.6 The difference appeared with a larger sample</h3>
 <p>With release 1 alone (123 participants), the three feature sets performed similarly, and individual recordings had a large effect on single folds. With releases 1 to 3, pretrained LaBraM improved while the other two stayed about the same. This is a reminder that results from smaller samples should be treated cautiously, and I plan to check the result again as more releases are added.</p>
 <figure>
   <div class="chart w" id="slope"></div>
   <figcaption><b>Figure 6.</b> Same pipeline and evaluation with 123 and with 373 participants.</figcaption>
 </figure>
 
-<h3>3.6 Known developmental changes show up in the data</h3>
+<h3>3.7 Known developmental changes show up in the data</h3>
 <p>Two well-established developmental changes appear in this sample: alpha peak frequency increases with age and the aperiodic exponent decreases. The LaBraM embeddings also show an age gradient without being trained on age.</p>
 <figure>
   <div class="two">
@@ -215,7 +231,7 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
   <figcaption><b>Figure 7.</b> Release 1 only (n = 123). <b>(a)</b> Alpha peak frequency vs. age. <b>(b)</b> Aperiodic exponent vs. age. <b>(c, d)</b> Each participant's layer-3 embedding projected onto its first two principal components, colored by age (light = 5, dark = 21). One component correlates with age in each (Spearman ρ = 0.68 pretrained, 0.55 random). These plots are descriptive. The cross-validated results in Figure 3 are the main test.</figcaption>
 </figure>
 
-<h3>3.7 Attention and p-factor were not predicted</h3>
+<h3>3.8 Attention and p-factor were not predicted</h3>
 <p>HBN also includes parent-reported CBCL scores. For the attention factor and the p-factor, all three feature sets had R² near zero with 362 participants (attention: −0.01, 0.00, and 0.00 for standard, pretrained, and random; p-factor: −0.02, −0.01, and 0.00). Neither standard features nor LaBraM embeddings predicted these scores from eyes-closed resting EEG. This suggests resting-state EEG may also be limited for autism-related traits, which is consistent with the literature below.</p>
 
 <h2>4. Prior work on autism EEG markers</h2>
@@ -228,7 +244,7 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 <h2>5. Next steps</h2>
 <p>For the autism question, I'm planning to use movie-watching EEG rather than resting state. HBN recorded the same participants' EEG while they watched short films, including <i>The Present</i> and <i>Despicable Me</i>. In HBN fMRI, autistic children showed lower synchrony with peers in the theory-of-mind network during a movie (Lyons et al., 2020, d = 0.93), which suggests naturalistic social stimuli may reveal differences that rest does not, and I have not yet found an EEG study that uses HBN's movie recordings in this way.</p>
 <ol>
-  <li><b>Strengthen the baseline.</b> Add connectivity and the other feature families from Tang et al. (2026), plus a nonlinear model.</li>
+  <li><b>Strengthen the baseline.</b> Compare LaBraM with the full-resolution power spectrum (every 1 Hz bin on every channel), which tests the spectral-estimator explanation directly, then add connectivity and the other feature families from Tang et al. (2026) and a nonlinear model.</li>
   <li><b>Process the movie EEG.</b> Same pipeline, plus an inter-subject synchrony measure: how closely each participant's EEG follows the group response to the same moment in the film.</li>
   <li><b>Obtain diagnostic labels.</b> HBN's clinician diagnoses, IQ, and trait measures require a data use agreement signed by a faculty sponsor.</li>
   <li><b>Test autism with the same procedure.</b> Nested cross-validation, identical held-out participants for every feature set, age, sex, IQ, site, and epilepsy as covariates, and robustness reported alongside accuracy.</li>
@@ -239,6 +255,7 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 <ul>
   <li><b>Age is not autism.</b> These results show that LaBraM embeddings carry developmental information beyond standard features. They do not address autism.</li>
   <li><b>The baseline is limited.</b> 229 spectral features and a linear model, without connectivity, complexity, or cross-frequency measures. A stronger baseline may reduce the gap.</li>
+  <li><b>Residualization is linear and incomplete.</b> Removing standard-feature information with ridge regression leaves some shared variance and ignores nonlinear relationships, so the residual results (section 3.5) are approximate.</li>
   <li><b>The statistical evidence is modest.</b> The main comparisons pass a corrected resampled t-test (p = .047 after Holm correction), but all results come from one dataset. Testing the fitted models on a held-out HBN release would be a stronger check.</li>
   <li><b>EEG brain age is well studied.</b> A foundation model pretrained on HBN itself reported higher accuracy over a wider age range (<a href="https://www.emergentmind.com/papers/2607.06629" target="_blank" rel="noopener noreferrer">STST-JEPA, 2026</a>). The contribution here is the controlled comparison against standard features and random weights.</li>
   <li><b>One model, one condition.</b> LaBraM only, eyes-closed rest only, and 19 channels with embeddings averaged across tokens.</li>

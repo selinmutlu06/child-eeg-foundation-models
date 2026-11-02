@@ -1,0 +1,6 @@
+{
+ "pretrained minus standard": {"r2": 0.0855, "r2_sd": 0.0646, "mae": 2.693, "folds_r2_above_0": 22, "t_vs_0": 2.408, "p_vs_0": 0.0241, "top_layer": 8},
+ "random minus standard": {"r2": 0.1191, "r2_sd": 0.0903, "mae": 2.647, "folds_r2_above_0": 22, "t_vs_0": 2.401, "p_vs_0": 0.0245, "top_layer": 9},
+ "standard minus pretrained": {"r2": 0.1742, "r2_sd": 0.1038, "mae": 2.528, "folds_r2_above_0": 25, "t_vs_0": 3.054, "p_vs_0": 0.0055, "top_layer": 2},
+ "pretrained residual vs random residual": {"mean_diff_r2": -0.0336, "folds_better": 8, "t": -0.766, "p": 0.451}
+}
