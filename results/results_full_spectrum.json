@@ -1,0 +1,71 @@
+{
+ "n": 373,
+ "standard": {
+  "r2": 0.5121,
+  "r2_sd": 0.11,
+  "mae": 1.822,
+  "folds_r2_above_0": 25,
+  "p_vs_0": 0.0,
+  "top_layer": 1
+ },
+ "full spectrum": {
+  "r2": 0.5982,
+  "r2_sd": 0.0726,
+  "mae": 1.695,
+  "folds_r2_above_0": 25,
+  "p_vs_0": 0.0,
+  "top_layer": 1
+ },
+ "pretrained": {
+  "r2": 0.5943,
+  "r2_sd": 0.0898,
+  "mae": 1.694,
+  "folds_r2_above_0": 25,
+  "p_vs_0": 0.0,
+  "top_layer": 3
+ },
+ "full spectrum+pretrained": {
+  "r2": 0.6454,
+  "r2_sd": 0.063,
+  "mae": 1.589,
+  "folds_r2_above_0": 25,
+  "p_vs_0": 0.0,
+  "top_layer": 3
+ },
+ "pretrained minus full spectrum": {
+  "r2": 0.0405,
+  "r2_sd": 0.0478,
+  "mae": 2.774,
+  "folds_r2_above_0": 20,
+  "p_vs_0": 0.1367,
+  "top_layer": 1
+ },
+ "full spectrum minus pretrained": {
+  "r2": 0.325,
+  "r2_sd": 0.1824,
+  "mae": 2.216,
+  "folds_r2_above_0": 24,
+  "p_vs_0": 0.0035,
+  "top_layer": 4
+ },
+ "full spectrum vs standard": {
+  "mean_diff_r2": 0.0861,
+  "folds_better": 25,
+  "p": 0.0116
+ },
+ "pretrained vs full spectrum": {
+  "mean_diff_r2": -0.0039,
+  "folds_better": 10,
+  "p": 0.8973
+ },
+ "full spectrum+pretrained vs full spectrum": {
+  "mean_diff_r2": 0.0472,
+  "folds_better": 23,
+  "p": 0.0274
+ },
+ "full spectrum+pretrained vs pretrained": {
+  "mean_diff_r2": 0.0511,
+  "folds_better": 23,
+  "p": 0.0832
+ }
+}
