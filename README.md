@@ -13,7 +13,7 @@ This project asks whether EEG foundation models capture information about brain 
 | LaBraM, random weights | 0.51 (0.07) | 1.91 | 0.38 |
 | Standard + LaBraM pretrained | 0.61 (0.09) | 1.67 | |
 
-Pretrained LaBraM beat standard features in 24 of 25 test folds (corrected resampled t-test p = .013, .047 after Holm correction). Adding standard features to LaBraM did not significantly improve it (p = .48), suggesting LaBraM already captures most of the standard-feature information. After removing what the standard features explain, pretrained and random-weights embeddings kept similar small amounts of age information (R² 0.09 vs. 0.12, p = .45), so the pretraining advantage appears to lie mainly in representing spectral information more usefully rather than in new information. A ridge model on the full power spectrum (1,691 values: every 0.5 Hz from 1 to 45 Hz on 19 channels) matched pretrained LaBraM (R² 0.60 vs. 0.59, p = .90), and LaBraM kept no significant age information after the full spectrum was removed (R² 0.04, p = .14). None of the feature sets predicted the CBCL attention factor or the p-factor (R² near zero, n = 362). Details, figures, and limitations are on the project page.
+Pretrained LaBraM beat standard features in 24 of 25 test folds (corrected resampled t-test p = .013, .047 after Holm correction). Adding standard features to LaBraM did not significantly improve it (p = .48), suggesting LaBraM already captures most of the standard-feature information. After removing what the standard features explain, pretrained and random-weights embeddings kept similar small amounts of age information (R² 0.09 vs. 0.12, p = .45), so the pretraining advantage appears to lie mainly in representing spectral information more usefully rather than in new information. A ridge model on the full power spectrum (1,691 values: every 0.5 Hz from 1 to 45 Hz on 19 channels) matched pretrained LaBraM (R² 0.60 vs. 0.59, p = .90), and LaBraM kept no significant age information after the full spectrum was removed (R² 0.04, p = .14). None of the feature sets predicted the CBCL attention factor or the p-factor (R² near zero, n = 362), and movie-watching EEG (The Present, Despicable Me), including inter-subject synchrony, did not predict any of the four CBCL scores either. Details, figures, and limitations are on the project page.
 
 ## Repository
 
@@ -26,6 +26,8 @@ pipeline/analyze_v3.py             MAE, combined model, corrected resampled t-te
 pipeline/analyze_residual.py       residualization test: what is left after removing standard-feature information
 pipeline/run_all_releases.py       reprocesses releases 1-3 with standard features, full spectrum, and LaBraM in one pass
 pipeline/analyze_full_spectrum.py  full-spectrum comparison and two-way residualization
+pipeline/run_movies.py             processes The Present and Despicable Me recordings, including synchrony signals
+pipeline/analyze_movies.py         movie vs. rest comparison and inter-subject correlation
 pipeline/hbn_labram_colab.ipynb    runs everything in Google Colab
 results/                           summary tables for the 373-participant analysis
 ```

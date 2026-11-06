@@ -112,7 +112,7 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
   <h1>What do EEG foundation models learn about children's brains?</h1>
   <p class="sub">First result: age prediction from resting EEG in 373 children</p>
   <p>Selin Mutlu, Duke University</p>
-  <p>Working notes, last updated November 3, 2026</p>
+  <p>Working notes, last updated November 5, 2026</p>
   <p class="links"><a href="https://github.com/selinmutlu06/child-eeg-foundation-models" target="_blank" rel="noopener noreferrer">Code</a><a href="https://neuromechanist.github.io/data/hbn" target="_blank" rel="noopener noreferrer">HBN-EEG data</a><a href="https://arxiv.org/abs/2405.18765v1" target="_blank" rel="noopener noreferrer">LaBraM paper</a><a href="https://selinmutlu.com" target="_blank" rel="noopener noreferrer">selinmutlu.com</a></p>
 </header>
 
@@ -253,6 +253,23 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 <h3>3.9 Attention and p-factor were not predicted</h3>
 <p>HBN also includes parent-reported CBCL scores. For the attention factor and the p-factor, all three feature sets had R² near zero with 362 participants (attention: −0.01, 0.00, and 0.00 for standard, pretrained, and random; p-factor: −0.02, −0.01, and 0.00). Neither standard features nor LaBraM embeddings predicted these scores from eyes-closed resting EEG. This suggests resting-state EEG may also be limited for autism-related traits, which is consistent with the literature below.</p>
 
+<h3>3.10 Movie watching did not change this</h3>
+<p>Resting state might simply be the wrong condition, so I repeated the analysis on the same children's EEG while they watched two short films, <i>The Present</i> (400 usable recordings) and <i>Despicable Me</i> (402). Besides the same spectral and LaBraM features, I measured neural synchrony: for each child and electrode, the correlation between their 1 to 20 Hz signal (and their alpha and theta power over time) and the average of all other children at the same moment of the film.</p>
+<div class="tbl">
+  <table>
+    <caption><b>Table 5.</b> Nested cross-validated R² on the same children (n = 323 for age, 313 for the CBCL scores). Synchrony uses 57 features (19 electrodes, three signals).</caption>
+    <thead><tr><th>Target</th><th class="r">Rest, spectrum</th><th class="r">Rest, LaBraM</th><th class="r">Movie, spectrum</th><th class="r">Movie, LaBraM</th><th class="r">Movie, synchrony</th></tr></thead>
+    <tbody>
+      <tr><td>Age</td><td class="r">0.59</td><td class="r">0.60</td><td class="r">0.57</td><td class="r">0.59</td><td class="r">0.25</td></tr>
+      <tr><td>Attention</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">0.00</td></tr>
+      <tr><td>p-factor</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">0.00</td></tr>
+      <tr><td>Internalizing</td><td class="r">−0.01</td><td class="r">0.00</td><td class="r">−0.02</td><td class="r">0.00</td><td class="r">0.01</td></tr>
+      <tr><td>Externalizing</td><td class="r">0.04</td><td class="r">0.05</td><td class="r">−0.02</td><td class="r">0.02</td><td class="r">0.00</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Movie EEG predicted age about as well as rest, and synchrony carried age information on its own (R² 0.25, and 0.19 in <i>Despicable Me</i>), consistent with Petroni et al. (2018), who found that synchrony to these films declines with age in HBN. Adding synchrony to the movie spectrum did not improve age prediction (p = .27). None of the feature sets, at rest or during either film, predicted the four CBCL scores. The one nominally significant value (rest LaBraM for externalizing, uncorrected p = .02) does not survive correction across the roughly 40 tests here. Mean synchrony was also unrelated to the CBCL scores after controlling for age and data quality (all |ρ| &lt; 0.09). My synchrony measure is simpler than the correlated component analysis used by Petroni et al., so a stronger method could still find something, but parent-reported dimensions do not seem to be reachable from these EEG features in either condition.</p>
+
 <h2>4. Prior work on autism EEG markers</h2>
 <p>In a meta-analysis of 41 resting-state studies (Neo et al., 2023), relative alpha (lower in autism) and gamma (higher) showed the clearest pooled effects. Large samples have been less encouraging: LEAP (Garcés et al., 2022, n = 411) found no group differences after correction, and ABC-CT (Webb et al., 2023) found the face-evoked N170 to be a stronger candidate than resting measures. Carson et al. (2024) showed that selecting models for reproducibility gives more stable associations, which is why robustness is reported alongside accuracy here.</p>
 <figure>
@@ -261,10 +278,10 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
 </figure>
 
 <h2>5. Next steps</h2>
-<p>For the autism question, I'm planning to use movie-watching EEG rather than resting state. HBN recorded the same participants' EEG while they watched short films, including <i>The Present</i> and <i>Despicable Me</i>. In HBN fMRI, autistic children showed lower synchrony with peers in the theory-of-mind network during a movie (Lyons et al., 2020, d = 0.93), which suggests naturalistic social stimuli may reveal differences that rest does not, and I have not yet found an EEG study that uses HBN's movie recordings in this way.</p>
+<p>For the autism question, I'm planning to use movie-watching EEG rather than resting state. HBN recorded the same participants' EEG while they watched short films, including <i>The Present</i> and <i>Despicable Me</i>. In HBN fMRI, autistic children showed lower synchrony with peers in the theory-of-mind network during a movie (Lyons et al., 2020, d = 0.93), which suggests naturalistic social stimuli may reveal differences that rest does not. Movie EEG did not help with the CBCL scores (section 3.10), but a clinical diagnosis is a different target from a parent questionnaire, so the movie recordings remain the better place to test autism.</p>
 <ol>
   <li><b>Strengthen the baseline further.</b> The full-spectrum comparison is done (section 3.6). Next are connectivity and the other feature families from Tang et al. (2026), a nonlinear model, and other foundation models, to check whether any of them carry information the spectrum does not.</li>
-  <li><b>Process the movie EEG.</b> Same pipeline, plus an inter-subject synchrony measure: how closely each participant's EEG follows the group response to the same moment in the film.</li>
+  <li><b>Improve the synchrony measure.</b> The first pass is done (section 3.10). Next are correlated component analysis, the standard method in this literature, and synchrony restricted to the film's social scenes, where the fMRI difference was found.</li>
   <li><b>Obtain diagnostic labels.</b> HBN's clinician diagnoses, IQ, and trait measures require a data use agreement signed by a faculty sponsor.</li>
   <li><b>Test autism with the same procedure.</b> Nested cross-validation, identical held-out participants for every feature set, age, sex, IQ, site, and epilepsy as covariates, and robustness reported alongside accuracy.</li>
 </ol>
@@ -277,13 +294,14 @@ footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--line);
   <li><b>Residualization is linear and incomplete.</b> Removing standard-feature information with ridge regression leaves some shared variance and ignores nonlinear relationships, so the residual results (section 3.5) are approximate.</li>
   <li><b>The statistical evidence is modest.</b> The main comparisons pass a corrected resampled t-test (p = .047 after Holm correction), but all results come from one dataset. Testing the fitted models on a held-out HBN release would be a stronger check.</li>
   <li><b>EEG brain age is well studied.</b> A foundation model pretrained on HBN itself reported higher accuracy over a wider age range (<a href="https://www.emergentmind.com/papers/2607.06629" target="_blank" rel="noopener noreferrer">STST-JEPA, 2026</a>). The contribution here is the controlled comparison against standard features and random weights.</li>
-  <li><b>One model, one condition.</b> LaBraM only, eyes-closed rest only, and 19 channels with embeddings averaged across tokens.</li>
+  <li><b>One model, few conditions.</b> LaBraM only, eyes-closed rest and two films, and 19 channels with embeddings averaged across tokens.</li>
   <li><b>Site and data quality are not yet modeled.</b> HBN spans several sites, and 32 of 405 participants were excluded for too few clean windows.</li>
 </ul>
 
 <h2>References</h2>
 <ol class="refs">
   <li>Jiang, Zhao &amp; Lu (2024). <a href="https://arxiv.org/abs/2405.18765v1" target="_blank" rel="noopener noreferrer">Large Brain Model for learning generic representations with tremendous EEG data in BCI</a>. ICLR.</li>
+  <li>Petroni, Cohen, Ai, Langer, Henin, Vanderwal, Milham &amp; Parra (2018). <a href="https://www.eneuro.org/content/eneuro/5/1/ENEURO.0244-17.2017.full.pdf" target="_blank" rel="noopener noreferrer">The variability of neural responses to naturalistic videos change with age and sex</a>. eNeuro.</li>
   <li>Shirazi et al. (2024). <a href="https://www.biorxiv.org/content/10.1101/2024.10.03.615261v2" target="_blank" rel="noopener noreferrer">HBN-EEG: the FAIR implementation of the Healthy Brain Network EEG dataset</a>. bioRxiv.</li>
   <li>Carson, Major, Akkineni, Fung, Peters, Carpenter, Dawson &amp; Carlson (2024). <a href="https://scholars.duke.edu/publication/1652807" target="_blank" rel="noopener noreferrer">Model selection to achieve reproducible associations between resting state EEG features and autism</a>. Scientific Reports.</li>
   <li>Nadeau &amp; Bengio (2003). <a href="https://link.springer.com/article/10.1023/A:1024068626366" target="_blank" rel="noopener noreferrer">Inference for the generalization error</a>. Machine Learning.</li>

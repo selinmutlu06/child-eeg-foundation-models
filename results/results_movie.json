@@ -1,0 +1,417 @@
+{
+ "main (same children, rest vs The Present)": {
+  "age": {
+   "n": 323,
+   "rest: standard": {
+    "r2": 0.478,
+    "sd": 0.134,
+    "p_vs_0": 0.0
+   },
+   "rest: full spectrum": {
+    "r2": 0.585,
+    "sd": 0.108,
+    "p_vs_0": 0.0
+   },
+   "rest: LaBraM": {
+    "r2": 0.596,
+    "sd": 0.098,
+    "p_vs_0": 0.0
+   },
+   "movie: standard": {
+    "r2": 0.49,
+    "sd": 0.106,
+    "p_vs_0": 0.0
+   },
+   "movie: full spectrum": {
+    "r2": 0.566,
+    "sd": 0.093,
+    "p_vs_0": 0.0
+   },
+   "movie: LaBraM": {
+    "r2": 0.586,
+    "sd": 0.065,
+    "p_vs_0": 0.0
+   },
+   "movie: synchrony (ISC)": {
+    "r2": 0.248,
+    "sd": 0.091,
+    "p_vs_0": 0.0
+   },
+   "movie: full spectrum + ISC": {
+    "r2": 0.58,
+    "sd": 0.089,
+    "p_vs_0": 0.0
+   },
+   "movie: full spectrum vs rest: full spectrum": {
+    "diff": -0.019,
+    "folds_better": 12,
+    "p": 0.6976
+   },
+   "movie: LaBraM vs rest: LaBraM": {
+    "diff": -0.01,
+    "folds_better": 12,
+    "p": 0.8287
+   },
+   "movie: full spectrum + ISC vs movie: full spectrum": {
+    "diff": 0.014,
+    "folds_better": 17,
+    "p": 0.2701
+   }
+  },
+  "attention": {
+   "n": 313,
+   "rest: standard": {
+    "r2": -0.011,
+    "sd": 0.03,
+    "p_vs_0": 0.4948
+   },
+   "rest: full spectrum": {
+    "r2": -0.01,
+    "sd": 0.018,
+    "p_vs_0": 0.313
+   },
+   "rest: LaBraM": {
+    "r2": -0.011,
+    "sd": 0.05,
+    "p_vs_0": 0.6847
+   },
+   "movie: standard": {
+    "r2": -0.011,
+    "sd": 0.024,
+    "p_vs_0": 0.4227
+   },
+   "movie: full spectrum": {
+    "r2": -0.005,
+    "sd": 0.019,
+    "p_vs_0": 0.6547
+   },
+   "movie: LaBraM": {
+    "r2": -0.011,
+    "sd": 0.019,
+    "p_vs_0": 0.2981
+   },
+   "movie: synchrony (ISC)": {
+    "r2": -0.004,
+    "sd": 0.01,
+    "p_vs_0": 0.5213
+   },
+   "movie: full spectrum + ISC": {
+    "r2": -0.004,
+    "sd": 0.018,
+    "p_vs_0": 0.7032
+   },
+   "movie: full spectrum vs rest: full spectrum": {
+    "diff": 0.006,
+    "folds_better": 13,
+    "p": 0.7102
+   },
+   "movie: LaBraM vs rest: LaBraM": {
+    "diff": 0.0,
+    "folds_better": 9,
+    "p": 0.9859
+   },
+   "movie: full spectrum + ISC vs movie: full spectrum": {
+    "diff": 0.001,
+    "folds_better": 12,
+    "p": 0.7841
+   }
+  },
+  "p_factor": {
+   "n": 313,
+   "rest: standard": {
+    "r2": -0.004,
+    "sd": 0.01,
+    "p_vs_0": 0.4804
+   },
+   "rest: full spectrum": {
+    "r2": -0.011,
+    "sd": 0.017,
+    "p_vs_0": 0.2713
+   },
+   "rest: LaBraM": {
+    "r2": -0.006,
+    "sd": 0.044,
+    "p_vs_0": 0.8139
+   },
+   "movie: standard": {
+    "r2": -0.002,
+    "sd": 0.002,
+    "p_vs_0": 0.0231
+   },
+   "movie: full spectrum": {
+    "r2": -0.008,
+    "sd": 0.014,
+    "p_vs_0": 0.3359
+   },
+   "movie: LaBraM": {
+    "r2": -0.009,
+    "sd": 0.022,
+    "p_vs_0": 0.4588
+   },
+   "movie: synchrony (ISC)": {
+    "r2": -0.002,
+    "sd": 0.004,
+    "p_vs_0": 0.5126
+   },
+   "movie: full spectrum + ISC": {
+    "r2": -0.008,
+    "sd": 0.014,
+    "p_vs_0": 0.3036
+   },
+   "movie: full spectrum vs rest: full spectrum": {
+    "diff": 0.003,
+    "folds_better": 13,
+    "p": 0.6819
+   },
+   "movie: LaBraM vs rest: LaBraM": {
+    "diff": -0.003,
+    "folds_better": 8,
+    "p": 0.8955
+   },
+   "movie: full spectrum + ISC vs movie: full spectrum": {
+    "diff": -0.001,
+    "folds_better": 3,
+    "p": 0.1333
+   }
+  },
+  "internalizing": {
+   "n": 313,
+   "rest: standard": {
+    "r2": -0.003,
+    "sd": 0.015,
+    "p_vs_0": 0.7587
+   },
+   "rest: full spectrum": {
+    "r2": -0.007,
+    "sd": 0.028,
+    "p_vs_0": 0.6427
+   },
+   "rest: LaBraM": {
+    "r2": 0.002,
+    "sd": 0.034,
+    "p_vs_0": 0.9299
+   },
+   "movie: standard": {
+    "r2": -0.011,
+    "sd": 0.024,
+    "p_vs_0": 0.4343
+   },
+   "movie: full spectrum": {
+    "r2": -0.017,
+    "sd": 0.027,
+    "p_vs_0": 0.271
+   },
+   "movie: LaBraM": {
+    "r2": 0.001,
+    "sd": 0.014,
+    "p_vs_0": 0.9132
+   },
+   "movie: synchrony (ISC)": {
+    "r2": 0.011,
+    "sd": 0.016,
+    "p_vs_0": 0.2254
+   },
+   "movie: full spectrum + ISC": {
+    "r2": -0.017,
+    "sd": 0.031,
+    "p_vs_0": 0.3303
+   },
+   "movie: full spectrum vs rest: full spectrum": {
+    "diff": -0.01,
+    "folds_better": 11,
+    "p": 0.5744
+   },
+   "movie: LaBraM vs rest: LaBraM": {
+    "diff": -0.001,
+    "folds_better": 13,
+    "p": 0.962
+   },
+   "movie: full spectrum + ISC vs movie: full spectrum": {
+    "diff": -0.0,
+    "folds_better": 21,
+    "p": 0.9771
+   }
+  },
+  "externalizing": {
+   "n": 313,
+   "rest: standard": {
+    "r2": 0.019,
+    "sd": 0.052,
+    "p_vs_0": 0.5016
+   },
+   "rest: full spectrum": {
+    "r2": 0.035,
+    "sd": 0.073,
+    "p_vs_0": 0.3934
+   },
+   "rest: LaBraM": {
+    "r2": 0.047,
+    "sd": 0.035,
+    "p_vs_0": 0.0242
+   },
+   "movie: standard": {
+    "r2": -0.018,
+    "sd": 0.03,
+    "p_vs_0": 0.2862
+   },
+   "movie: full spectrum": {
+    "r2": -0.021,
+    "sd": 0.053,
+    "p_vs_0": 0.4721
+   },
+   "movie: LaBraM": {
+    "r2": 0.02,
+    "sd": 0.041,
+    "p_vs_0": 0.3897
+   },
+   "movie: synchrony (ISC)": {
+    "r2": -0.004,
+    "sd": 0.008,
+    "p_vs_0": 0.4265
+   },
+   "movie: full spectrum + ISC": {
+    "r2": -0.02,
+    "sd": 0.049,
+    "p_vs_0": 0.4548
+   },
+   "movie: full spectrum vs rest: full spectrum": {
+    "diff": -0.056,
+    "folds_better": 2,
+    "p": 0.0226
+   },
+   "movie: LaBraM vs rest: LaBraM": {
+    "diff": -0.027,
+    "folds_better": 7,
+    "p": 0.4022
+   },
+   "movie: full spectrum + ISC vs movie: full spectrum": {
+    "diff": 0.001,
+    "folds_better": 11,
+    "p": 0.8362
+   }
+  }
+ },
+ "replication (Despicable Me)": {
+  "age": {
+   "n": 402,
+   "full spectrum": {
+    "r2": 0.612,
+    "sd": 0.054,
+    "p_vs_0": 0.0
+   },
+   "synchrony (ISC)": {
+    "r2": 0.185,
+    "sd": 0.064,
+    "p_vs_0": 0.0
+   }
+  },
+  "attention": {
+   "n": 392,
+   "full spectrum": {
+    "r2": 0.002,
+    "sd": 0.032,
+    "p_vs_0": 0.8891
+   },
+   "synchrony (ISC)": {
+    "r2": -0.012,
+    "sd": 0.017,
+    "p_vs_0": 0.2002
+   }
+  },
+  "p_factor": {
+   "n": 392,
+   "full spectrum": {
+    "r2": -0.009,
+    "sd": 0.015,
+    "p_vs_0": 0.2873
+   },
+   "synchrony (ISC)": {
+    "r2": -0.017,
+    "sd": 0.03,
+    "p_vs_0": 0.3225
+   }
+  },
+  "internalizing": {
+   "n": 392,
+   "full spectrum": {
+    "r2": 0.013,
+    "sd": 0.045,
+    "p_vs_0": 0.6205
+   },
+   "synchrony (ISC)": {
+    "r2": 0.008,
+    "sd": 0.011,
+    "p_vs_0": 0.1661
+   }
+  },
+  "externalizing": {
+   "n": 392,
+   "full spectrum": {
+    "r2": -0.009,
+    "sd": 0.03,
+    "p_vs_0": 0.5786
+   },
+   "synchrony (ISC)": {
+    "r2": -0.007,
+    "sd": 0.015,
+    "p_vs_0": 0.4201
+   }
+  }
+ },
+ "ISC associations": {
+  "ThePresent": {
+   "mean ISC": 0.1003,
+   "ISC vs age (spearman)": [
+    -0.015,
+    0.759705
+   ],
+   "ISC vs attention | age, artifacts": [
+    -0.029,
+    0.5624,
+    390
+   ],
+   "ISC vs p_factor | age, artifacts": [
+    -0.073,
+    0.1497,
+    390
+   ],
+   "ISC vs internalizing | age, artifacts": [
+    -0.055,
+    0.2748,
+    390
+   ],
+   "ISC vs externalizing | age, artifacts": [
+    -0.059,
+    0.2466,
+    390
+   ]
+  },
+  "DespicableMe": {
+   "mean ISC": 0.0852,
+   "ISC vs age (spearman)": [
+    -0.146,
+    0.003288
+   ],
+   "ISC vs attention | age, artifacts": [
+    -0.05,
+    0.3246,
+    392
+   ],
+   "ISC vs p_factor | age, artifacts": [
+    -0.026,
+    0.6025,
+    392
+   ],
+   "ISC vs internalizing | age, artifacts": [
+    -0.081,
+    0.1089,
+    392
+   ],
+   "ISC vs externalizing | age, artifacts": [
+    0.058,
+    0.2512,
+    392
+   ]
+  }
+ }
+}
