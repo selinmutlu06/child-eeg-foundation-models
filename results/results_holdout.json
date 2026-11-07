@@ -1,0 +1,322 @@
+{
+ "n_train": 373,
+ "n_test": 612,
+ "layers": {
+  "biot": 3,
+  "biot random": 4,
+  "labram": 11,
+  "labram random": 1
+ },
+ "r2": {
+  "F": {
+   "r2": 0.521,
+   "ci95": [
+    0.453,
+    0.582
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.83
+  },
+  "B": {
+   "r2": 0.468,
+   "ci95": [
+    0.383,
+    0.54
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.95
+  },
+  "C": {
+   "r2": 0.278,
+   "ci95": [
+    0.189,
+    0.362
+   ],
+   "p_le_0": 0.0,
+   "mae": 2.26
+  },
+  "F+B+C": {
+   "r2": 0.533,
+   "ci95": [
+    0.462,
+    0.596
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.77
+  },
+  "biot": {
+   "r2": 0.554,
+   "ci95": [
+    0.496,
+    0.61
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.81
+  },
+  "biot + F+B+C": {
+   "r2": 0.586,
+   "ci95": [
+    0.515,
+    0.646
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.68
+  },
+  "biot minus F": {
+   "r2": 0.055,
+   "ci95": [
+    0.02,
+    0.087
+   ],
+   "p_le_0": 0.0005,
+   "mae": 2.76
+  },
+  "biot minus F+B+C": {
+   "r2": 0.066,
+   "ci95": [
+    0.026,
+    0.105
+   ],
+   "p_le_0": 0.002,
+   "mae": 2.73
+  },
+  "biot random": {
+   "r2": 0.462,
+   "ci95": [
+    0.386,
+    0.533
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.95
+  },
+  "biot random + F+B+C": {
+   "r2": 0.541,
+   "ci95": [
+    0.459,
+    0.609
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.75
+  },
+  "biot random minus F": {
+   "r2": 0.037,
+   "ci95": [
+    0.009,
+    0.064
+   ],
+   "p_le_0": 0.007,
+   "mae": 2.78
+  },
+  "biot random minus F+B+C": {
+   "r2": 0.026,
+   "ci95": [
+    0.004,
+    0.048
+   ],
+   "p_le_0": 0.0105,
+   "mae": 2.8
+  },
+  "labram": {
+   "r2": 0.574,
+   "ci95": [
+    0.515,
+    0.628
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.74
+  },
+  "labram + F+B+C": {
+   "r2": 0.553,
+   "ci95": [
+    0.482,
+    0.617
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.73
+  },
+  "labram minus F": {
+   "r2": 0.038,
+   "ci95": [
+    0.012,
+    0.064
+   ],
+   "p_le_0": 0.0015,
+   "mae": 2.77
+  },
+  "labram minus F+B+C": {
+   "r2": 0.041,
+   "ci95": [
+    0.007,
+    0.075
+   ],
+   "p_le_0": 0.009,
+   "mae": 2.76
+  },
+  "labram random": {
+   "r2": 0.159,
+   "ci95": [
+    0.102,
+    0.214
+   ],
+   "p_le_0": 0.0,
+   "mae": 2.58
+  },
+  "labram random + F+B+C": {
+   "r2": 0.543,
+   "ci95": [
+    0.475,
+    0.603
+   ],
+   "p_le_0": 0.0,
+   "mae": 1.76
+  },
+  "labram random minus F": {
+   "r2": 0.039,
+   "ci95": [
+    0.011,
+    0.066
+   ],
+   "p_le_0": 0.004,
+   "mae": 2.75
+  },
+  "labram random minus F+B+C": {
+   "r2": 0.075,
+   "ci95": [
+    0.046,
+    0.105
+   ],
+   "p_le_0": 0.0,
+   "mae": 2.7
+  }
+ },
+ "compare": {
+  "biot vs F": {
+   "diff": 0.033,
+   "ci95": [
+    -0.022,
+    0.089
+   ],
+   "p_two_sided": 0.254
+  },
+  "biot vs F+B+C": {
+   "diff": 0.022,
+   "ci95": [
+    -0.034,
+    0.081
+   ],
+   "p_two_sided": 0.422
+  },
+  "biot + F+B+C vs F+B+C": {
+   "diff": 0.053,
+   "ci95": [
+    0.023,
+    0.081
+   ],
+   "p_two_sided": 0.0
+  },
+  "biot random + F+B+C vs F+B+C": {
+   "diff": 0.008,
+   "ci95": [
+    -0.023,
+    0.031
+   ],
+   "p_two_sided": 0.487
+  },
+  "biot + F+B+C vs biot random + F+B+C": {
+   "diff": 0.046,
+   "ci95": [
+    0.026,
+    0.066
+   ],
+   "p_two_sided": 0.0
+  },
+  "biot vs biot random": {
+   "diff": 0.092,
+   "ci95": [
+    0.049,
+    0.138
+   ],
+   "p_two_sided": 0.0
+  },
+  "biot minus F+B+C vs biot random minus F+B+C": {
+   "diff": 0.04,
+   "ci95": [
+    0.011,
+    0.069
+   ],
+   "p_two_sided": 0.013
+  },
+  "biot minus F vs biot random minus F": {
+   "diff": 0.019,
+   "ci95": [
+    -0.004,
+    0.04
+   ],
+   "p_two_sided": 0.104
+  },
+  "labram vs F": {
+   "diff": 0.053,
+   "ci95": [
+    0.001,
+    0.107
+   ],
+   "p_two_sided": 0.047
+  },
+  "labram vs F+B+C": {
+   "diff": 0.041,
+   "ci95": [
+    -0.018,
+    0.1
+   ],
+   "p_two_sided": 0.176
+  },
+  "labram + F+B+C vs F+B+C": {
+   "diff": 0.02,
+   "ci95": [
+    0.001,
+    0.038
+   ],
+   "p_two_sided": 0.036
+  },
+  "labram random + F+B+C vs F+B+C": {
+   "diff": 0.01,
+   "ci95": [
+    -0.007,
+    0.026
+   ],
+   "p_two_sided": 0.222
+  },
+  "labram + F+B+C vs labram random + F+B+C": {
+   "diff": 0.01,
+   "ci95": [
+    -0.015,
+    0.035
+   ],
+   "p_two_sided": 0.459
+  },
+  "labram vs labram random": {
+   "diff": 0.414,
+   "ci95": [
+    0.352,
+    0.478
+   ],
+   "p_two_sided": 0.0
+  },
+  "labram minus F+B+C vs labram random minus F+B+C": {
+   "diff": -0.035,
+   "ci95": [
+    -0.074,
+    0.006
+   ],
+   "p_two_sided": 0.086
+  },
+  "labram minus F vs labram random minus F": {
+   "diff": -0.001,
+   "ci95": [
+    -0.033,
+    0.032
+   ],
+   "p_two_sided": 0.947
+  }
+ }
+}
