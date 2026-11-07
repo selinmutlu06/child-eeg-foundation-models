@@ -132,6 +132,11 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
 
 <p class="abstract">I'm interested in whether EEG foundation models learn information about brain development and autism beyond the spectral features we already measure. As a first test, I predicted age from eyes-closed resting EEG in <b>373 children</b> from the Healthy Brain Network. Embeddings from pretrained LaBraM reached a nested cross-validated <b>R² of 0.59</b>, compared with <b>0.49</b> for standard spectral features and <b>0.51</b> for the same architecture with random weights. That corresponds to a mean absolute error of <b>1.69 years</b> versus <b>1.85 years</b>. Pretrained LaBraM had the higher R² in 24 of 25 test folds (corrected resampled t-test, p = .013). However, when I removed the information the standard features can explain from the embeddings, pretrained and random-weights LaBraM kept similar amounts of age information (R² 0.09 and 0.12). And when I compared LaBraM with the full power spectrum (every half-hertz from 1 to 45 Hz on all 19 channels) instead of 229 summary features, the two performed the same (R² 0.60 vs. 0.59, p = .90), and LaBraM kept no significant age information once the full spectrum was removed. So with a linear readout, LaBraM's advantage over standard features comes from the standard features summarizing away spectral detail, not from information beyond the spectrum. I then ran the same comparison on ten other EEG foundation models. None of them predicted age significantly better than the full spectrum, and adding any of them to the spectrum did not significantly help. BIOT, the one model that uses a bipolar montage, kept a small amount of age information after the spectrum was removed (R² 0.08). It is not an autism result. It is a baseline for the autism question.</p>
 
+<figure>
+  <div class="chart w" id="fmchart"></div>
+  <figcaption><b>Figure 2.</b> Predicting age from resting EEG with eleven foundation models (n = 373, mean ± SD over 25 nested folds). Filled dots are pretrained models, open dots the same architecture with random weights. The dashed line and shaded band are the full power spectrum from the same windows (R² 0.60 ± 0.07). Details in section 3.11.</figcaption>
+</figure>
+
 <nav class="toc" aria-label="Contents"><p class="toc-h">Contents</p><ol><li><a href="#motivation">1. Motivation</a></li><li><a href="#data">2. Data and pipeline</a></li><li><a href="#results">3. Results</a><ol><li><a href="#age">3.1 Pretrained LaBraM predicts age more accurately</a></li><li><a href="#folds">3.2 The difference is consistent across folds</a></li><li><a href="#pretraining">3.3 The improvement depends on pretraining</a></li><li><a href="#combined">3.4 LaBraM appears to contain most of the standard-feature information</a></li><li><a href="#residual">3.5 The pretraining advantage is mostly in spectral information</a></li><li><a href="#full-spectrum">3.6 The full spectrum matches LaBraM</a></li><li><a href="#sample-size">3.7 The difference appeared with a larger sample</a></li><li><a href="#development">3.8 Known developmental changes show up in the data</a></li><li><a href="#cbcl">3.9 Attention and p-factor were not predicted</a></li><li><a href="#movies">3.10 Movie watching did not change this</a></li><li><a href="#other-models">3.11 Ten other foundation models</a></li></ol></li><li><a href="#prior-work">4. Prior work on autism EEG markers</a></li><li><a href="#next">5. Next steps</a></li><li><a href="#limitations">6. Limitations</a></li><li><a href="#references">References</a></li></ol></nav>
 
 <h2 id="motivation">1. Motivation</h2>
@@ -144,7 +149,7 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
 <div class="side">
   <figure style="margin:4px 0 0">
     <div class="chart" id="headmap"><svg role="img" aria-label="Top view of the head showing the 19 electrode positions used" fill="currentColor" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 170.28 167.372687" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style> </defs> <g id="figure_1"> <g id="patch_1"> <path d="M 0 167.372687  L 170.28 167.372687  L 170.28 0  L 0 0  L 0 167.372687  z " style="fill: none"/> </g> <g id="axes_1"> <g id="PathCollection_1"> <defs> <path id="C0_0_1a44dc6c4b" d="M 0 1.870829  C 0.49615 1.870829 0.972045 1.673706 1.322876 1.322876  C 1.673706 0.972045 1.870829 0.49615 1.870829 -0  C 1.870829 -0.49615 1.673706 -0.972045 1.322876 -1.322876  C 0.972045 -1.673706 0.49615 -1.870829 0 -1.870829  C -0.49615 -1.870829 -0.972045 -1.673706 -1.322876 -1.322876  C -1.673706 -0.972045 -1.870829 -0.49615 -1.870829 0  C -1.870829 0.49615 -1.673706 0.972045 -1.322876 1.322876  C -0.972045 1.673706 -0.49615 1.870829 0 1.870829  z "/> </defs> <use xlink:href="#C0_0_1a44dc6c4b" x="66.590811" y="29.127098" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="102.204157" y="28.629824" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="42.229276" y="54.214701" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="59.234646" y="53.057709" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="84.555181" y="51.664186" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="110.335049" y="52.600178" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="127.964746" y="53.230072" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="35.613248" y="88.976752" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="53.706023" y="84.990119" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="84.530723" y="83.308523" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="115.671416" y="84.896178" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="132.919161" y="88.754653" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="43.48825" y="120.857485" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="58.783345" y="117.257387" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="84.357639" y="116.460475" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="110.776503" y="117.263043" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="124.71117" y="120.801524" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="68.071723" y="140.565889" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="100.077678" y="140.428167" style="stroke: currentColor"/> </g> <g id="line2d_1"> <path d="M 154.692933 88.902814  L 154.555687 84.535549  L 154.144488 80.18552  L 153.46096 75.869894  L 152.5078 71.605703  L 151.28877 67.409775  L 149.808682 63.298671  L 148.073376 59.288615  L 146.0897 55.395433  L 143.865484 51.634488  L 141.409505 48.020625  L 138.731456 44.568105  L 135.841906 41.290554  L 132.752259 38.200907  L 129.474708 35.311357  L 126.022188 32.633309  L 122.408325 30.17733  L 118.647381 27.953114  L 114.754199 25.969438  L 110.744142 24.234132  L 106.633038 22.754043  L 102.437111 21.535014  L 98.17292 20.581854  L 93.857294 19.898326  L 89.507265 19.487127  L 85.14 19.34988  L 80.772735 19.487127  L 76.422706 19.898326  L 72.10708 20.581854  L 67.842889 21.535014  L 63.646962 22.754043  L 59.535858 24.234132  L 55.525801 25.969438  L 51.632619 27.953114  L 47.871675 30.17733  L 44.257812 32.633309  L 40.805292 35.311357  L 37.527741 38.200907  L 34.438094 41.290554  L 31.548544 44.568105  L 28.870495 48.020625  L 26.414516 51.634488  L 24.1903 55.395433  L 22.206624 59.288615  L 20.471318 63.298671  L 18.99123 67.409775  L 17.7722 71.605703  L 16.81904 75.869894  L 16.135512 80.18552  L 15.724313 84.535549  L 15.587067 88.902814  L 15.724313 93.270079  L 16.135512 97.620108  L 16.81904 101.935734  L 17.7722 106.199925  L 18.99123 110.395852  L 20.471318 114.506956  L 22.206624 118.517012  L 24.1903 122.410195  L 26.414516 126.171139  L 28.870495 129.785002  L 31.548544 133.237522  L 34.438094 136.515073  L 37.527741 139.60472  L 40.805292 142.49427  L 44.257812 145.172319  L 47.871675 147.628298  L 51.632619 149.852514  L 55.525801 151.836189  L 59.535858 153.571496  L 63.646962 155.051584  L 67.842889 156.270614  L 72.10708 157.223773  L 76.422706 157.907301  L 80.772735 158.3185  L 85.14 158.455747  L 89.507265 158.3185  L 93.857294 157.907301  L 98.17292 157.223773  L 102.437111 156.270614  L 106.633038 155.051584  L 110.744142 153.571496  L 114.754199 151.836189  L 118.647381 149.852514  L 122.408325 147.628298  L 126.022188 145.172319  L 129.474708 142.49427  L 132.752259 139.60472  L 135.841906 136.515073  L 138.731456 133.237522  L 141.409505 129.785002  L 143.865484 126.171139  L 146.0897 122.410195  L 148.073376 118.517012  L 149.808682 114.506956  L 151.28877 110.395852  L 152.5078 106.199925  L 153.46096 101.935734  L 154.144488 97.620108  L 154.555687 93.270079  L 154.692933 88.902814  " style="fill: none; stroke: currentColor; stroke-linecap: square"/> </g> <g id="line2d_2"> <path d="M 70.572868 20.892453  L 85.14 8.91694  L 99.707132 20.892453  " style="fill: none; stroke: currentColor; stroke-linecap: square"/> </g> <g id="line2d_3"> <path d="M 16.004384 81.182438  L 14.196008 78.122109  L 13.083161 78.010824  L 11.427801 78.525516  L 9.758531 81.182438  L 10.022832 89.667896  L 9.049091 101.86748  L 11.135679 107.167414  L 14.196008 108.155066  L 17.117231 105.581607  " style="fill: none; stroke: currentColor; stroke-linecap: square"/> </g> <g id="line2d_4"> <path d="M 154.275616 81.182438  L 156.083992 78.122109  L 157.196839 78.010824  L 158.852199 78.525516  L 160.521469 81.182438  L 160.257168 89.667896  L 161.230909 101.86748  L 159.144321 107.167414  L 156.083992 108.155066  L 153.162769 105.581607  " style="fill: none; stroke: currentColor; stroke-linecap: square"/> </g> <g id="text_1"> <text style="font-size: 8px;  text-anchor: start" x="68.329634" y="32.037254" transform="rotate(-0 68.329634 32.037254)">Fp1</text> </g> <g id="text_2"> <text style="font-size: 8px;  text-anchor: start" x="103.942981" y="31.53998" transform="rotate(-0 103.942981 31.53998)">Fp2</text> </g> <g id="text_3"> <text style="font-size: 8px;  text-anchor: start" x="43.968099" y="57.124858" transform="rotate(-0 43.968099 57.124858)">F7</text> </g> <g id="text_4"> <text style="font-size: 8px;  text-anchor: start" x="60.973469" y="55.967866" transform="rotate(-0 60.973469 55.967866)">F3</text> </g> <g id="text_5"> <text style="font-size: 8px;  text-anchor: start" x="86.294005" y="54.574342" transform="rotate(-0 86.294005 54.574342)">Fz</text> </g> <g id="text_6"> <text style="font-size: 8px;  text-anchor: start" x="112.073873" y="55.510334" transform="rotate(-0 112.073873 55.510334)">F4</text> </g> <g id="text_7"> <text style="font-size: 8px;  text-anchor: start" x="129.703569" y="56.140228" transform="rotate(-0 129.703569 56.140228)">F8</text> </g> <g id="text_8"> <text style="font-size: 8px;  text-anchor: start" x="37.352071" y="91.886908" transform="rotate(-0 37.352071 91.886908)">T7</text> </g> <g id="text_9"> <text style="font-size: 8px;  text-anchor: start" x="55.444846" y="87.900276" transform="rotate(-0 55.444846 87.900276)">C3</text> </g> <g id="text_10"> <text style="font-size: 8px;  text-anchor: start" x="86.269547" y="86.21868" transform="rotate(-0 86.269547 86.21868)">Cz</text> </g> <g id="text_11"> <text style="font-size: 8px;  text-anchor: start" x="117.410239" y="87.806334" transform="rotate(-0 117.410239 87.806334)">C4</text> </g> <g id="text_12"> <text style="font-size: 8px;  text-anchor: start" x="134.657984" y="91.664809" transform="rotate(-0 134.657984 91.664809)">T8</text> </g> <g id="text_13"> <text style="font-size: 8px;  text-anchor: start" x="45.227073" y="123.767641" transform="rotate(-0 45.227073 123.767641)">P7</text> </g> <g id="text_14"> <text style="font-size: 8px;  text-anchor: start" x="60.522169" y="120.167543" transform="rotate(-0 60.522169 120.167543)">P3</text> </g> <g id="text_15"> <text style="font-size: 8px;  text-anchor: start" x="86.096462" y="119.370631" transform="rotate(-0 86.096462 119.370631)">Pz</text> </g> <g id="text_16"> <text style="font-size: 8px;  text-anchor: start" x="112.515327" y="120.173199" transform="rotate(-0 112.515327 120.173199)">P4</text> </g> <g id="text_17"> <text style="font-size: 8px;  text-anchor: start" x="126.449993" y="123.71168" transform="rotate(-0 126.449993 123.71168)">P8</text> </g> <g id="text_18"> <text style="font-size: 8px;  text-anchor: start" x="69.810547" y="143.476045" transform="rotate(-0 69.810547 143.476045)">O1</text> </g> <g id="text_19"> <text style="font-size: 8px;  text-anchor: start" x="101.816501" y="143.338323" transform="rotate(-0 101.816501 143.338323)">O2</text> </g> </g> </g> </svg> </div>
-    <figcaption><b>Figure 2.</b> The 19 standard 10-20 positions LaBraM expects (plotted with MNE). Each one is taken from the nearest electrode on HBN's 128-channel EGI net.</figcaption>
+    <figcaption><b>Figure 3.</b> The 19 standard 10-20 positions LaBraM expects (plotted with MNE). Each one is taken from the nearest electrode on HBN's 128-channel EGI net.</figcaption>
   </figure>
   <ol>
     <li>Interpolate noisy channels, re-reference to the average, band-pass 0.5 to 75 Hz, and notch filter at 60 Hz.</li>
@@ -160,7 +165,7 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
 <p>Pretrained LaBraM explained about 59% of the variance in age, compared with about 49% for standard features. Its predictions were off by 1.69 years on average, compared with 1.85 years for standard features and 2.83 years for always predicting the mean age. It also had the smallest spread across folds and the highest robustness score.</p>
 <figure>
   <div class="chart w" id="r1"></div>
-  <figcaption><b>Figure 3.</b> Nested cross-validated R² for predicting age (mean ± SD over 25 test folds, n = 373). MAE is mean absolute error in years. Robustness R reflects how well two models trained on different participants agree when predicting the same held-out participants (not computed for the combined model).</figcaption>
+  <figcaption><b>Figure 4.</b> Nested cross-validated R² for predicting age (mean ± SD over 25 test folds, n = 373). MAE is mean absolute error in years. Robustness R reflects how well two models trained on different participants agree when predicting the same held-out participants (not computed for the combined model).</figcaption>
 </figure>
 <div class="tbl">
   <table>
@@ -180,7 +185,7 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
 <p>To check that the average was not driven by a few splits, I compared the feature sets fold by fold on the same test participants. Because repeated cross-validation folds overlap, the counts alone are not independent tests, so I also used the corrected resampled t-test of Nadeau &amp; Bengio (2003), which accounts for that overlap.</p>
 <figure>
   <div class="chart w" id="waffle"></div>
-  <figcaption><b>Figure 4.</b> Each box is one test fold. A filled box means the first feature set had the higher R² on that fold. The number on the right is the median difference in R².</figcaption>
+  <figcaption><b>Figure 5.</b> Each box is one test fold. A filled box means the first feature set had the higher R² on that fold. The number on the right is the median difference in R².</figcaption>
 </figure>
 <div class="tbl">
   <table>
@@ -201,7 +206,7 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
 <p>The random-weights model produces embeddings of the same size as the pretrained one but performed about the same as the standard features. Every pretrained layer scored higher than every random-weights layer, and layers 2 to 4 were already close to the best, which suggests much of the age-related information is present early in the network.</p>
 <figure>
   <div class="chart w" id="layerchart"></div>
-  <figcaption><b>Figure 5.</b> R² for age from each layer evaluated separately. This is not nested, so the best layer is slightly optimistic. Nested selection chose layer 3 most often (7 of 25 folds). The dashed line is the standard-feature result.</figcaption>
+  <figcaption><b>Figure 6.</b> R² for age from each layer evaluated separately. This is not nested, so the best layer is slightly optimistic. Nested selection chose layer 3 most often (7 of 25 folds). The dashed line is the standard-feature result.</figcaption>
 </figure>
 
 <h3 id="combined">3.4 LaBraM appears to contain most of the standard-feature information</h3>
@@ -246,7 +251,7 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
 <p>With release 1 alone (123 participants), the three feature sets performed similarly, and individual recordings had a large effect on single folds. With releases 1 to 3, pretrained LaBraM improved while the other two stayed about the same. This is a reminder that results from smaller samples should be treated cautiously, and I plan to check the result again as more releases are added.</p>
 <figure>
   <div class="chart w" id="slope"></div>
-  <figcaption><b>Figure 6.</b> Same pipeline and evaluation with 123 and with 373 participants.</figcaption>
+  <figcaption><b>Figure 7.</b> Same pipeline and evaluation with 123 and with 373 participants.</figcaption>
 </figure>
 
 <h3 id="development">3.8 Known developmental changes show up in the data</h3>
@@ -257,7 +262,7 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
     <div class="chart" id="scatter-aper"></div>
   </div>
   <div class="chart" id="pca" style="margin-top:12px"></div>
-  <figcaption><b>Figure 7.</b> Release 1 only (n = 123). <b>(a)</b> Alpha peak frequency vs. age. <b>(b)</b> Aperiodic exponent vs. age. <b>(c, d)</b> Each participant's layer-3 embedding projected onto its first two principal components, colored by age (light = 5, dark = 21). One component correlates with age in each (Spearman ρ = 0.68 pretrained, 0.55 random). These plots are descriptive. The cross-validated results in Figure 3 are the main test.</figcaption>
+  <figcaption><b>Figure 8.</b> Release 1 only (n = 123). <b>(a)</b> Alpha peak frequency vs. age. <b>(b)</b> Aperiodic exponent vs. age. <b>(c, d)</b> Each participant's layer-3 embedding projected onto its first two principal components, colored by age (light = 5, dark = 21). One component correlates with age in each (Spearman ρ = 0.68 pretrained, 0.55 random). These plots are descriptive. The cross-validated results in Figure 4 are the main test.</figcaption>
 </figure>
 
 <h3 id="cbcl">3.9 Attention and p-factor were not predicted</h3>
@@ -309,7 +314,7 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
 <p>In a meta-analysis of 41 resting-state studies (Neo et al., 2023), relative alpha (lower in autism) and gamma (higher) showed the clearest pooled effects. Large samples have been less encouraging: LEAP (Garcés et al., 2022, n = 411) found no group differences after correction, and ABC-CT (Webb et al., 2023) found the face-evoked N170 to be a stronger candidate than resting measures. Carson et al. (2024) showed that selecting models for reproducibility gives more stable associations, which is why robustness is reported alongside accuracy here.</p>
 <figure>
   <div class="chart w" id="forest"></div>
-  <figcaption><b>Figure 8.</b> Resting-state power in autism vs. neurotypical groups, from Neo, Foti, Keehn &amp; Kelleher (2023). Hedges' g with 95% CIs. Black is absolute power, blue is relative power, filled markers are p &lt; .05. The relative gamma estimate is based on two studies.</figcaption>
+  <figcaption><b>Figure 9.</b> Resting-state power in autism vs. neurotypical groups, from Neo, Foti, Keehn &amp; Kelleher (2023). Hedges' g with 95% CIs. Black is absolute power, blue is relative power, filled markers are p &lt; .05. The relative gamma estimate is based on two studies.</figcaption>
 </figure>
 
 <h2 id="next">5. Next steps</h2>
@@ -401,6 +406,37 @@ const f2 = v => (v < 0 ? "−" : "") + Math.abs(v).toFixed(2);
 const fg = (node, v) => { node.style.fill = v; return node; };
 const sk = (node, v) => { node.style.stroke = v; return node; };
 
+
+/* Figure 2: eleven foundation models vs. the full spectrum */
+(function fm() {
+  const D = [["BIOT",0.676,0.062,0.550],["ST-EEGFormer",0.651,0.080,0.403],["EEGPT",0.626,0.058,0.242],["REVE",0.625,0.066,0.093],["CBraMod",0.620,0.053,0.523],["EEGDINO",0.603,0.074,0.534],["LaBraM",0.597,0.082,0.168],["LUNA",0.547,0.099,0.535],["SignalJEPA",0.219,0.084,0.307],["CodeBrain",0.204,0.094,0.267],["BENDR",0.049,0.039,0.078]];
+  const SPEC = [0.604, 0.068];
+  const W = 700, L = 128, Rm = 24, T = 36, B = 40, row = 27, H = T + D.length * row + B;
+  const svg = svgRoot(document.getElementById("fmchart"), W, H, "R squared for age from eleven EEG foundation models compared with the full power spectrum");
+  const x = lin(0, 0.8, L, W - Rm), y0 = T + row / 2;
+  el("rect", { x: x(SPEC[0] - SPEC[1]), y: T - 8, width: x(SPEC[0] + SPEC[1]) - x(SPEC[0] - SPEC[1]), height: D.length * row + 8, style: "fill: var(--grid)" }, svg);
+  for (let v = 0; v <= 0.801; v += 0.2) {
+    sk(el("line", { x1: x(v), x2: x(v), y1: T - 8, y2: H - B }, svg), "var(--line)").style.strokeOpacity = 0.6;
+    txt(svg, x(v), H - B + 17, v.toFixed(1), { "text-anchor": "middle", "font-size": 12 });
+  }
+  sk(el("line", { x1: L, x2: W - Rm, y1: H - B, y2: H - B }, svg), "var(--fg)");
+  const sl = sk(el("line", { x1: x(SPEC[0]), x2: x(SPEC[0]), y1: T - 14, y2: H - B, "stroke-width": 1.5, "stroke-dasharray": "5 4" }, svg), "var(--fg)");
+  txt(svg, x(SPEC[0]), T - 18, "full spectrum", { "text-anchor": "middle", "font-size": 12 });
+  txt(svg, (L + W - Rm) / 2, H - 6, "R² on held-out participants", { "text-anchor": "middle", "font-size": 12.5 });
+  D.forEach(([n, m, sd, r], i) => {
+    const y = y0 + i * row, g = el("g", {}, svg);
+    fg(txt(g, L - 12, y + 4, n, { "text-anchor": "end", "font-size": 13.5 }), "var(--fg)");
+    sk(el("line", { x1: x(Math.max(0, m - sd)), x2: x(m + sd), y1: y, y2: y, "stroke-width": 1.5 }, g), "var(--pre)");
+    const rd = el("circle", { cx: x(r), cy: y, r: 4.5, "stroke-width": 1.6 }, g); fg(rd, "var(--bg)"); sk(rd, "var(--rand)");
+    fg(el("circle", { cx: x(m), cy: y, r: 5.5 }, g), "var(--pre)");
+    hover(el("rect", { x: 0, y: y - row / 2, width: W, height: row, fill: "transparent" }, g),
+      `${n}<br>pretrained R² ${m.toFixed(3)} ± ${sd.toFixed(3)}<br>random weights ${r.toFixed(3)}<br>full spectrum ${SPEC[0].toFixed(3)}`);
+  });
+  const ly = T - 18, lx = L + 4;
+  fg(el("circle", { cx: lx, cy: ly - 4, r: 5 }, svg), "var(--pre)"); txt(svg, lx + 10, ly, "pretrained", { "font-size": 12 });
+  const lr = el("circle", { cx: lx + 100, cy: ly - 4, r: 4.5, "stroke-width": 1.6 }, svg); fg(lr, "var(--bg)"); sk(lr, "var(--rand)"); txt(svg, lx + 110, ly, "random weights", { "font-size": 12 });
+})();
+
 /* Figure 1: static EEG page, like a printout */
 (function eeg() {
   const cv = document.getElementById("eeg"), ctx = cv.getContext("2d");
@@ -437,7 +473,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 })();
 
-/* Figure 3: dot + whisker, age */
+/* Figure 4: dot + whisker, age */
 (function r1() {
   const W = 700, H = 244, L = 170, Rm = 150, T = 24, B = 40;
   const svg = svgRoot(document.getElementById("r1"), W, H, "R squared predicting age for four feature sets");
@@ -464,7 +500,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   });
 })();
 
-/* Figure 4: fold wins */
+/* Figure 5: fold wins */
 (function waffle() {
   const rows = [
     ["pre", 24, 0.107, "Pretrained vs. standard"],
@@ -487,7 +523,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   txt(svg, W, H - 4, "median ΔR²", { "font-size": 11.5, "text-anchor": "end" });
 })();
 
-/* Figure 5: layers */
+/* Figure 6: layers */
 (function layers() {
   const W = 700, H = 300, L = 50, Rm = 12, T = 14, B = 44;
   const svg = svgRoot(document.getElementById("layerchart"), W, H, "R squared predicting age at each of 12 LaBraM layers, pretrained versus random weights");
@@ -514,7 +550,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   fg(txt(svg, x(10), y(0.522) - 10, "random weights", { "text-anchor": "middle", "font-size": 12.5 }), "var(--rand)");
 })();
 
-/* Figure 6: slope */
+/* Figure 7: slope */
 (function slope() {
   const d = { std: [0.498, 0.494], pre: [0.487, 0.594], rand: [0.465, 0.506] };
   const W = 700, H = 280, T = 24, B = 40, x0 = 240, x1 = 460;
@@ -534,7 +570,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   }
 })();
 
-/* Figure 7a, 7b: scatter */
+/* Figure 8a, 7b: scatter */
 function scatter(hostId, which, tag) {
   const W = 340, H = 270, L = 48, Rm = 10, T = 20, B = 40;
   const ages = R1.age, vals = which === "apf" ? R1.apf : R1.aper_exp;
@@ -565,7 +601,7 @@ function scatter(hostId, which, tag) {
 scatter("scatter-apf", "apf", "(a)");
 scatter("scatter-aper", "aper", "(b)");
 
-/* Figure 7c, 7d: embedding PCA */
+/* Figure 8c, 7d: embedding PCA */
 (function pca() {
   const W = 700, H = 250, gap = 24, pw = (W - gap) / 2, T = 22;
   const svg = svgRoot(document.getElementById("pca"), W, H, "Participants' LaBraM embeddings colored by age, pretrained and random weights");
@@ -586,7 +622,7 @@ scatter("scatter-aper", "aper", "(b)");
   });
 })();
 
-/* Figure 8: forest */
+/* Figure 9: forest */
 (function forest() {
   const d = [
     ["Delta", [0.06, -0.23, 0.34, 0], [0.10, -0.26, 0.45, 0]],
