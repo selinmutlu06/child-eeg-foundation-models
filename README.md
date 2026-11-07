@@ -13,7 +13,21 @@ This project asks whether EEG foundation models capture information about brain 
 | LaBraM, random weights | 0.51 (0.07) | 1.91 | 0.38 |
 | Standard + LaBraM pretrained | 0.61 (0.09) | 1.67 | |
 
-Pretrained LaBraM beat standard features in 24 of 25 test folds (corrected resampled t-test p = .013, .047 after Holm correction). Adding standard features to LaBraM did not significantly improve it (p = .48), suggesting LaBraM already captures most of the standard-feature information. After removing what the standard features explain, pretrained and random-weights embeddings kept similar small amounts of age information (R² 0.09 vs. 0.12, p = .45), so the pretraining advantage appears to lie mainly in representing spectral information more usefully rather than in new information. A ridge model on the full power spectrum (1,691 values: every 0.5 Hz from 1 to 45 Hz on 19 channels) matched pretrained LaBraM (R² 0.60 vs. 0.59, p = .90), and LaBraM kept no significant age information after the full spectrum was removed (R² 0.04, p = .14). None of the feature sets predicted the CBCL attention factor or the p-factor (R² near zero, n = 362), and movie-watching EEG (The Present, Despicable Me), including inter-subject synchrony, did not predict any of the four CBCL scores either. Details, figures, and limitations are on the project page.
+Pretrained LaBraM beat standard features in 24 of 25 test folds (corrected resampled t-test p = .013, .047 after Holm correction). Adding standard features to LaBraM did not significantly improve it (p = .48), suggesting LaBraM already captures most of the standard-feature information. After removing what the standard features explain, pretrained and random-weights embeddings kept similar small amounts of age information (R² 0.09 vs. 0.12, p = .45), so the pretraining advantage appears to lie mainly in representing spectral information more usefully rather than in new information. A ridge model on the full power spectrum (1,691 values: every 0.5 Hz from 1 to 45 Hz on 19 channels) matched pretrained LaBraM (R² 0.60 vs. 0.59, p = .90), and LaBraM kept no significant age information after the full spectrum was removed (R² 0.04, p = .14). None of the feature sets predicted the CBCL attention factor or the p-factor (R² near zero, n = 362), and movie-watching EEG (The Present, Despicable Me), including inter-subject synchrony, did not predict any of the four CBCL scores either. The same comparison on ten other foundation models (BIOT, ST-EEGFormer, EEGPT, REVE, CBraMod, EEGDINO, LUNA, SignalJEPA, CodeBrain, BENDR; frozen embeddings, same four windows per child) gave the same answer. No model predicted age significantly better than the full spectrum (R² 0.60 from the same windows; Holm-corrected across models), and none significantly improved on it when combined. BIOT, the only bipolar-montage model, kept a small amount of age information after the spectrum was removed (R² 0.08, corrected p = .031). Details, figures, and limitations are on the project page.
+
+| Model | Age R² | vs. full spectrum | Spectrum removed | Random weights |
+|---|---|---|---|---|
+| BIOT | 0.68 | +0.07 | 0.08 | 0.55 |
+| ST-EEGFormer | 0.65 | +0.05 | 0.06 | 0.40 |
+| EEGPT | 0.63 | +0.02 | 0.04 | 0.24 |
+| REVE | 0.63 | +0.02 | 0.04 | 0.09 |
+| CBraMod | 0.62 | +0.02 | 0.06 | 0.52 |
+| EEGDINO | 0.60 | 0.00 | 0.01 | 0.53 |
+| LaBraM | 0.60 | −0.01 | 0.02 | 0.17 |
+| LUNA | 0.55 | −0.06 | 0.01 | 0.54 |
+| SignalJEPA | 0.22 | −0.39 | 0.07 | 0.31 |
+| CodeBrain | 0.20 | −0.40 | 0.01 | 0.27 |
+| BENDR | 0.05 | −0.56 | 0.02 | 0.08 |
 
 ## Repository
 
@@ -28,6 +42,10 @@ pipeline/run_all_releases.py       reprocesses releases 1-3 with standard featur
 pipeline/analyze_full_spectrum.py  full-spectrum comparison and two-way residualization
 pipeline/run_movies.py             processes The Present and Despicable Me recordings, including synchrony signals
 pipeline/analyze_movies.py         movie vs. rest comparison and inter-subject correlation
+pipeline/cache_windows.py          caches each child's cleaned resting windows so every model sees the same data
+pipeline/fm_adapters.py            loading, preprocessing, and per-layer embedding for 11 foundation models
+pipeline/run_fm_embeddings.py      extracts pretrained and random-weights embeddings for each model
+pipeline/analyze_fm.py             each model vs. the full spectrum, combined, residualized, and vs. random weights
 pipeline/hbn_labram_colab.ipynb    runs everything in Google Colab
 results/                           summary tables for the 373-participant analysis
 ```

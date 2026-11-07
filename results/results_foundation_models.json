@@ -1,0 +1,959 @@
+{
+ "bendr": {
+  "n_children": 373,
+  "n_layers": 8,
+  "dim": 1536,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.049,
+    "sd": 0.039,
+    "p_vs_0": 0.0326
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.511,
+    "sd": 0.07,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.022,
+    "sd": 0.013,
+    "p_vs_0": 0.0047
+   },
+   "random weights": {
+    "r2": 0.078,
+    "sd": 0.061,
+    "p_vs_0": 0.0286
+   },
+   "model vs spectrum": {
+    "diff": -0.556,
+    "folds_better": 0,
+    "p": 0.0
+   },
+   "model+spectrum vs spectrum": {
+    "diff": -0.094,
+    "folds_better": 1,
+    "p": 0.0014
+   },
+   "pretrained vs random": {
+    "diff": -0.03,
+    "folds_better": 7,
+    "p": 0.2933
+   },
+   "top_layer": 1
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": -0.006,
+    "sd": 0.02,
+    "p_vs_0": 0.5574
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.012,
+    "folds_better": 14,
+    "p": 0.6653
+   },
+   "top_layer": 1
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.01,
+    "sd": 0.053,
+    "p_vs_0": 0.7317
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.007,
+    "folds_better": 18,
+    "p": 0.7858
+   },
+   "top_layer": 8
+  }
+ },
+ "biot": {
+  "n_children": 373,
+  "n_layers": 4,
+  "dim": 256,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.676,
+    "sd": 0.062,
+    "p_vs_0": 0.0
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.678,
+    "sd": 0.057,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.082,
+    "sd": 0.045,
+    "p_vs_0": 0.0028
+   },
+   "random weights": {
+    "r2": 0.55,
+    "sd": 0.088,
+    "p_vs_0": 0.0
+   },
+   "model vs spectrum": {
+    "diff": 0.072,
+    "folds_better": 23,
+    "p": 0.0416
+   },
+   "model+spectrum vs spectrum": {
+    "diff": 0.074,
+    "folds_better": 25,
+    "p": 0.0056
+   },
+   "pretrained vs random": {
+    "diff": 0.126,
+    "folds_better": 25,
+    "p": 0.0009
+   },
+   "top_layer": 3
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": -0.009,
+    "sd": 0.026,
+    "p_vs_0": 0.5149
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.009,
+    "folds_better": 11,
+    "p": 0.7372
+   },
+   "top_layer": 4
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.007,
+    "sd": 0.025,
+    "p_vs_0": 0.5977
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.009,
+    "folds_better": 18,
+    "p": 0.5878
+   },
+   "top_layer": 4
+  }
+ },
+ "cbramod": {
+  "n_children": 373,
+  "n_layers": 12,
+  "dim": 200,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.62,
+    "sd": 0.053,
+    "p_vs_0": 0.0
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.671,
+    "sd": 0.057,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.06,
+    "sd": 0.06,
+    "p_vs_0": 0.0808
+   },
+   "random weights": {
+    "r2": 0.523,
+    "sd": 0.081,
+    "p_vs_0": 0.0
+   },
+   "model vs spectrum": {
+    "diff": 0.015,
+    "folds_better": 12,
+    "p": 0.6737
+   },
+   "model+spectrum vs spectrum": {
+    "diff": 0.066,
+    "folds_better": 25,
+    "p": 0.0085
+   },
+   "pretrained vs random": {
+    "diff": 0.097,
+    "folds_better": 24,
+    "p": 0.0096
+   },
+   "top_layer": 3
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": 0.011,
+    "sd": 0.025,
+    "p_vs_0": 0.428
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.029,
+    "folds_better": 17,
+    "p": 0.2865
+   },
+   "top_layer": 8
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.003,
+    "sd": 0.021,
+    "p_vs_0": 0.7743
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.013,
+    "folds_better": 18,
+    "p": 0.4154
+   },
+   "top_layer": 10
+  }
+ },
+ "codebrain": {
+  "n_children": 373,
+  "n_layers": 8,
+  "dim": 285,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.204,
+    "sd": 0.094,
+    "p_vs_0": 0.0006
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.625,
+    "sd": 0.063,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.006,
+    "sd": 0.01,
+    "p_vs_0": 0.2718
+   },
+   "random weights": {
+    "r2": 0.267,
+    "sd": 0.093,
+    "p_vs_0": 0.0
+   },
+   "model vs spectrum": {
+    "diff": -0.4,
+    "folds_better": 0,
+    "p": 0.0
+   },
+   "model+spectrum vs spectrum": {
+    "diff": 0.021,
+    "folds_better": 17,
+    "p": 0.3064
+   },
+   "pretrained vs random": {
+    "diff": -0.062,
+    "folds_better": 7,
+    "p": 0.2575
+   },
+   "top_layer": 1
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": -0.014,
+    "sd": 0.03,
+    "p_vs_0": 0.4152
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.005,
+    "folds_better": 9,
+    "p": 0.7435
+   },
+   "top_layer": 1
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.005,
+    "sd": 0.011,
+    "p_vs_0": 0.3803
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.011,
+    "folds_better": 20,
+    "p": 0.3263
+   },
+   "top_layer": 1
+  }
+ },
+ "eegdino": {
+  "n_children": 373,
+  "n_layers": 12,
+  "dim": 200,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.603,
+    "sd": 0.074,
+    "p_vs_0": 0.0
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.643,
+    "sd": 0.053,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.009,
+    "sd": 0.026,
+    "p_vs_0": 0.5464
+   },
+   "random weights": {
+    "r2": 0.534,
+    "sd": 0.081,
+    "p_vs_0": 0.0
+   },
+   "model vs spectrum": {
+    "diff": -0.001,
+    "folds_better": 11,
+    "p": 0.9767
+   },
+   "model+spectrum vs spectrum": {
+    "diff": 0.039,
+    "folds_better": 22,
+    "p": 0.0622
+   },
+   "pretrained vs random": {
+    "diff": 0.069,
+    "folds_better": 22,
+    "p": 0.0475
+   },
+   "top_layer": 3
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": -0.001,
+    "sd": 0.007,
+    "p_vs_0": 0.7212
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.017,
+    "folds_better": 11,
+    "p": 0.4748
+   },
+   "top_layer": 1
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.016,
+    "sd": 0.053,
+    "p_vs_0": 0.5747
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.0,
+    "folds_better": 16,
+    "p": 0.9932
+   },
+   "top_layer": 12
+  }
+ },
+ "eegpt": {
+  "n_children": 373,
+  "n_layers": 8,
+  "dim": 512,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.626,
+    "sd": 0.058,
+    "p_vs_0": 0.0
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.656,
+    "sd": 0.053,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.039,
+    "sd": 0.027,
+    "p_vs_0": 0.0152
+   },
+   "random weights": {
+    "r2": 0.242,
+    "sd": 0.073,
+    "p_vs_0": 0.0
+   },
+   "model vs spectrum": {
+    "diff": 0.022,
+    "folds_better": 16,
+    "p": 0.5859
+   },
+   "model+spectrum vs spectrum": {
+    "diff": 0.052,
+    "folds_better": 21,
+    "p": 0.1157
+   },
+   "pretrained vs random": {
+    "diff": 0.384,
+    "folds_better": 25,
+    "p": 0.0
+   },
+   "top_layer": 7
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": -0.002,
+    "sd": 0.028,
+    "p_vs_0": 0.9202
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.017,
+    "folds_better": 15,
+    "p": 0.4985
+   },
+   "top_layer": 8
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": 0.002,
+    "sd": 0.017,
+    "p_vs_0": 0.8475
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.018,
+    "folds_better": 21,
+    "p": 0.2032
+   },
+   "top_layer": 2
+  }
+ },
+ "labram": {
+  "n_children": 373,
+  "n_layers": 12,
+  "dim": 200,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.597,
+    "sd": 0.082,
+    "p_vs_0": 0.0
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.648,
+    "sd": 0.063,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.016,
+    "sd": 0.025,
+    "p_vs_0": 0.2572
+   },
+   "random weights": {
+    "r2": 0.168,
+    "sd": 0.073,
+    "p_vs_0": 0.0003
+   },
+   "model vs spectrum": {
+    "diff": -0.008,
+    "folds_better": 9,
+    "p": 0.8322
+   },
+   "model+spectrum vs spectrum": {
+    "diff": 0.044,
+    "folds_better": 23,
+    "p": 0.0465
+   },
+   "pretrained vs random": {
+    "diff": 0.429,
+    "folds_better": 25,
+    "p": 0.0
+   },
+   "top_layer": 3
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": -0.007,
+    "sd": 0.02,
+    "p_vs_0": 0.5484
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.012,
+    "folds_better": 10,
+    "p": 0.6615
+   },
+   "top_layer": 11
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.009,
+    "sd": 0.021,
+    "p_vs_0": 0.4273
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.007,
+    "folds_better": 16,
+    "p": 0.6604
+   },
+   "top_layer": 12
+  }
+ },
+ "luna": {
+  "n_children": 373,
+  "n_layers": 8,
+  "dim": 256,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.547,
+    "sd": 0.099,
+    "p_vs_0": 0.0
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.595,
+    "sd": 0.095,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.01,
+    "sd": 0.037,
+    "p_vs_0": 0.643
+   },
+   "random weights": {
+    "r2": 0.535,
+    "sd": 0.101,
+    "p_vs_0": 0.0
+   },
+   "model vs spectrum": {
+    "diff": -0.058,
+    "folds_better": 8,
+    "p": 0.3321
+   },
+   "model+spectrum vs spectrum": {
+    "diff": -0.01,
+    "folds_better": 14,
+    "p": 0.7968
+   },
+   "pretrained vs random": {
+    "diff": 0.012,
+    "folds_better": 16,
+    "p": 0.6888
+   },
+   "top_layer": 1
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": -0.006,
+    "sd": 0.05,
+    "p_vs_0": 0.8245
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.012,
+    "folds_better": 17,
+    "p": 0.7131
+   },
+   "top_layer": 2
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.008,
+    "sd": 0.033,
+    "p_vs_0": 0.6438
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.008,
+    "folds_better": 18,
+    "p": 0.7332
+   },
+   "top_layer": 1
+  }
+ },
+ "reve": {
+  "n_children": 373,
+  "n_layers": 12,
+  "dim": 512,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.625,
+    "sd": 0.066,
+    "p_vs_0": 0.0
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.634,
+    "sd": 0.072,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.044,
+    "sd": 0.035,
+    "p_vs_0": 0.0346
+   },
+   "random weights": {
+    "r2": 0.093,
+    "sd": 0.087,
+    "p_vs_0": 0.0644
+   },
+   "model vs spectrum": {
+    "diff": 0.02,
+    "folds_better": 14,
+    "p": 0.5901
+   },
+   "model+spectrum vs spectrum": {
+    "diff": 0.03,
+    "folds_better": 17,
+    "p": 0.3655
+   },
+   "pretrained vs random": {
+    "diff": 0.531,
+    "folds_better": 25,
+    "p": 0.0
+   },
+   "top_layer": 8
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": 0.015,
+    "sd": 0.041,
+    "p_vs_0": 0.5055
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.034,
+    "folds_better": 19,
+    "p": 0.2404
+   },
+   "top_layer": 3
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.009,
+    "sd": 0.013,
+    "p_vs_0": 0.2551
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.008,
+    "folds_better": 16,
+    "p": 0.5754
+   },
+   "top_layer": 3
+  }
+ },
+ "signaljepa": {
+  "n_children": 373,
+  "n_layers": 8,
+  "dim": 64,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.219,
+    "sd": 0.084,
+    "p_vs_0": 0.0001
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.596,
+    "sd": 0.066,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.072,
+    "sd": 0.084,
+    "p_vs_0": 0.1322
+   },
+   "random weights": {
+    "r2": 0.307,
+    "sd": 0.072,
+    "p_vs_0": 0.0
+   },
+   "model vs spectrum": {
+    "diff": -0.385,
+    "folds_better": 0,
+    "p": 0.0
+   },
+   "model+spectrum vs spectrum": {
+    "diff": -0.009,
+    "folds_better": 6,
+    "p": 0.3644
+   },
+   "pretrained vs random": {
+    "diff": -0.088,
+    "folds_better": 0,
+    "p": 0.0114
+   },
+   "top_layer": 1
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": -0.005,
+    "sd": 0.011,
+    "p_vs_0": 0.3829
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.013,
+    "folds_better": 10,
+    "p": 0.6259
+   },
+   "top_layer": 8
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.014,
+    "sd": 0.027,
+    "p_vs_0": 0.3734
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.003,
+    "folds_better": 15,
+    "p": 0.8674
+   },
+   "top_layer": 2
+  }
+ },
+ "steegformer": {
+  "n_children": 373,
+  "n_layers": 8,
+  "dim": 512,
+  "age": {
+   "n": 373,
+   "model": {
+    "r2": 0.651,
+    "sd": 0.08,
+    "p_vs_0": 0.0
+   },
+   "spectrum": {
+    "r2": 0.604,
+    "sd": 0.068,
+    "p_vs_0": 0.0
+   },
+   "model+spectrum": {
+    "r2": 0.624,
+    "sd": 0.086,
+    "p_vs_0": 0.0
+   },
+   "model minus spectrum": {
+    "r2": 0.064,
+    "sd": 0.061,
+    "p_vs_0": 0.0703
+   },
+   "random weights": {
+    "r2": 0.403,
+    "sd": 0.09,
+    "p_vs_0": 0.0
+   },
+   "model vs spectrum": {
+    "diff": 0.047,
+    "folds_better": 15,
+    "p": 0.3014
+   },
+   "model+spectrum vs spectrum": {
+    "diff": 0.02,
+    "folds_better": 18,
+    "p": 0.6108
+   },
+   "pretrained vs random": {
+    "diff": 0.248,
+    "folds_better": 25,
+    "p": 0.0
+   },
+   "top_layer": 3
+  },
+  "attention": {
+   "n": 362,
+   "model": {
+    "r2": 0.005,
+    "sd": 0.043,
+    "p_vs_0": 0.8294
+   },
+   "spectrum": {
+    "r2": -0.019,
+    "sd": 0.045,
+    "p_vs_0": 0.4571
+   },
+   "model vs spectrum": {
+    "diff": 0.024,
+    "folds_better": 19,
+    "p": 0.3489
+   },
+   "top_layer": 4
+  },
+  "p_factor": {
+   "n": 362,
+   "model": {
+    "r2": -0.008,
+    "sd": 0.015,
+    "p_vs_0": 0.3583
+   },
+   "spectrum": {
+    "r2": -0.017,
+    "sd": 0.025,
+    "p_vs_0": 0.2439
+   },
+   "model vs spectrum": {
+    "diff": 0.009,
+    "folds_better": 16,
+    "p": 0.493
+   },
+   "top_layer": 5
+  }
+ }
+}
