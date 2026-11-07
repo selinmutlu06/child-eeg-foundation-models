@@ -50,6 +50,8 @@ pipeline/analyze_biot.py           tests whether BIOT's extra signal comes from 
 pipeline/analyze_fm_funcs.py       shared nested-CV, residualization, and test functions
 pipeline/cache_new_release.py      caches releases 4 and 5 for the held-out test
 pipeline/analyze_holdout.py        fits on releases 1-3 and tests once on releases 4-5
+pipeline/ablate_biot.py            removes one band or channel group from BIOT input and re-runs the held-out test
+pipeline/holdout_feats.py          spectrum, bipolar spectrum, and coherence features
 pipeline/hbn_labram_colab.ipynb    runs everything in Google Colab
 results/                           summary tables for the 373-participant analysis
 ```

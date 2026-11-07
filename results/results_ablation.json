@@ -1,0 +1,166 @@
+{
+ "none (full input)": {
+  "biot_alone_r2": 0.554,
+  "gain_over_baselines": 0.053,
+  "gain_ci95": [
+   0.023,
+   0.081
+  ]
+ },
+ "remove delta 1-4 Hz": {
+  "biot_alone_r2": 0.491,
+  "gain_over_baselines": 0.023,
+  "gain_ci95": [
+   -0.002,
+   0.044
+  ],
+  "gain_lost": 0.03,
+  "gain_lost_ci95": [
+   0.017,
+   0.044
+  ]
+ },
+ "remove theta 4-8 Hz": {
+  "biot_alone_r2": 0.512,
+  "gain_over_baselines": 0.031,
+  "gain_ci95": [
+   0.005,
+   0.054
+  ],
+  "gain_lost": 0.022,
+  "gain_lost_ci95": [
+   0.01,
+   0.034
+  ]
+ },
+ "remove alpha 8-13 Hz": {
+  "biot_alone_r2": 0.539,
+  "gain_over_baselines": 0.028,
+  "gain_ci95": [
+   -0.001,
+   0.056
+  ],
+  "gain_lost": 0.025,
+  "gain_lost_ci95": [
+   0.009,
+   0.043
+  ]
+ },
+ "remove beta 13-30 Hz": {
+  "biot_alone_r2": 0.508,
+  "gain_over_baselines": 0.031,
+  "gain_ci95": [
+   0.007,
+   0.055
+  ],
+  "gain_lost": 0.022,
+  "gain_lost_ci95": [
+   0.009,
+   0.036
+  ]
+ },
+ "remove gamma 30-45 Hz": {
+  "biot_alone_r2": 0.522,
+  "gain_over_baselines": 0.048,
+  "gain_ci95": [
+   0.024,
+   0.073
+  ],
+  "gain_lost": 0.005,
+  "gain_lost_ci95": [
+   -0.007,
+   0.017
+  ]
+ },
+ "remove left temporal chain": {
+  "biot_alone_r2": 0.54,
+  "gain_over_baselines": 0.038,
+  "gain_ci95": [
+   0.01,
+   0.066
+  ],
+  "gain_lost": 0.015,
+  "gain_lost_ci95": [
+   -0.001,
+   0.031
+  ]
+ },
+ "remove right temporal chain": {
+  "biot_alone_r2": 0.561,
+  "gain_over_baselines": 0.066,
+  "gain_ci95": [
+   0.039,
+   0.094
+  ],
+  "gain_lost": -0.013,
+  "gain_lost_ci95": [
+   -0.031,
+   0.005
+  ]
+ },
+ "remove left parasagittal chain": {
+  "biot_alone_r2": 0.537,
+  "gain_over_baselines": 0.039,
+  "gain_ci95": [
+   0.012,
+   0.064
+  ],
+  "gain_lost": 0.014,
+  "gain_lost_ci95": [
+   0.001,
+   0.029
+  ]
+ },
+ "remove right parasagittal chain": {
+  "biot_alone_r2": 0.516,
+  "gain_over_baselines": 0.063,
+  "gain_ci95": [
+   0.037,
+   0.09
+  ],
+  "gain_lost": -0.01,
+  "gain_lost_ci95": [
+   -0.023,
+   0.002
+  ]
+ },
+ "remove midline (Fz-Cz, Cz-Pz)": {
+  "biot_alone_r2": 0.558,
+  "gain_over_baselines": 0.038,
+  "gain_ci95": [
+   0.01,
+   0.062
+  ],
+  "gain_lost": 0.015,
+  "gain_lost_ci95": [
+   0.003,
+   0.028
+  ]
+ },
+ "remove frontal pairs": {
+  "biot_alone_r2": 0.555,
+  "gain_over_baselines": 0.05,
+  "gain_ci95": [
+   0.025,
+   0.074
+  ],
+  "gain_lost": 0.003,
+  "gain_lost_ci95": [
+   -0.006,
+   0.013
+  ]
+ },
+ "remove posterior pairs": {
+  "biot_alone_r2": 0.532,
+  "gain_over_baselines": 0.03,
+  "gain_ci95": [
+   0.002,
+   0.056
+  ],
+  "gain_lost": 0.023,
+  "gain_lost_ci95": [
+   0.008,
+   0.038
+  ]
+ }
+}
