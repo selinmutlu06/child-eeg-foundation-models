@@ -1,0 +1,100 @@
+{
+ "full spectrum (F)": {
+  "r2": 0.604,
+  "sd": 0.068,
+  "folds_above_0": 25,
+  "p_vs_0": 0.0
+ },
+ "bipolar spectrum (B)": {
+  "r2": 0.56,
+  "sd": 0.073,
+  "folds_above_0": 25,
+  "p_vs_0": 0.0
+ },
+ "coherence (C)": {
+  "r2": 0.335,
+  "sd": 0.105,
+  "folds_above_0": 25,
+  "p_vs_0": 0.0
+ },
+ "F+B+C": {
+  "r2": 0.608,
+  "sd": 0.072,
+  "folds_above_0": 25,
+  "p_vs_0": 0.0
+ },
+ "BIOT": {
+  "r2": 0.676,
+  "sd": 0.062,
+  "folds_above_0": 25,
+  "p_vs_0": 0.0
+ },
+ "BIOT + F+B+C": {
+  "r2": 0.651,
+  "sd": 0.07,
+  "folds_above_0": 25,
+  "p_vs_0": 0.0
+ },
+ "BIOT minus F": {
+  "r2": 0.082,
+  "sd": 0.045,
+  "folds_above_0": 25,
+  "p_vs_0": 0.0028
+ },
+ "BIOT minus B": {
+  "r2": 0.094,
+  "sd": 0.049,
+  "folds_above_0": 24,
+  "p_vs_0": 0.0018
+ },
+ "BIOT minus F+B+C": {
+  "r2": 0.062,
+  "sd": 0.071,
+  "folds_above_0": 20,
+  "p_vs_0": 0.1224
+ },
+ "random BIOT minus F": {
+  "r2": 0.022,
+  "sd": 0.035,
+  "folds_above_0": 20,
+  "p_vs_0": 0.2686
+ },
+ "random BIOT minus F+B+C": {
+  "r2": 0.008,
+  "sd": 0.03,
+  "folds_above_0": 19,
+  "p_vs_0": 0.648
+ },
+ "paired": {
+  "BIOT vs F": {
+   "diff": 0.072,
+   "folds_better": 23,
+   "p": 0.0416
+  },
+  "BIOT vs F+B+C": {
+   "diff": 0.069,
+   "folds_better": 20,
+   "p": 0.0998
+  },
+  "F+B+C vs F": {
+   "diff": 0.003,
+   "folds_better": 15,
+   "p": 0.8963
+  },
+  "B vs F": {
+   "diff": -0.044,
+   "folds_better": 5,
+   "p": 0.0882
+  },
+  "BIOT + F+B+C vs F+B+C": {
+   "diff": 0.044,
+   "folds_better": 24,
+   "p": 0.0144
+  },
+  "BIOT minus F vs random BIOT minus F": {
+   "diff": 0.06,
+   "folds_better": 22,
+   "p": 0.0324
+  }
+ }
+}
