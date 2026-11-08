@@ -1,0 +1,208 @@
+{
+ "cv": {
+  "full spectrum": {
+   "r2": 0.611,
+   "sd": 0.061
+  },
+  "bendr": {
+   "r2": 0.053,
+   "sd": 0.05,
+   "vs_spectrum": -0.558,
+   "folds_better": 0,
+   "p": 0.0
+  },
+  "biot": {
+   "r2": 0.686,
+   "sd": 0.057,
+   "vs_spectrum": 0.075,
+   "folds_better": 23,
+   "p": 0.0353
+  },
+  "cbramod": {
+   "r2": 0.638,
+   "sd": 0.058,
+   "vs_spectrum": 0.027,
+   "folds_better": 17,
+   "p": 0.4021
+  },
+  "codebrain": {
+   "r2": 0.318,
+   "sd": 0.077,
+   "vs_spectrum": -0.292,
+   "folds_better": 0,
+   "p": 0.0
+  },
+  "eegdino": {
+   "r2": 0.619,
+   "sd": 0.072,
+   "vs_spectrum": 0.009,
+   "folds_better": 12,
+   "p": 0.8243
+  },
+  "eegpt": {
+   "r2": 0.635,
+   "sd": 0.063,
+   "vs_spectrum": 0.024,
+   "folds_better": 15,
+   "p": 0.4346
+  },
+  "labram": {
+   "r2": 0.608,
+   "sd": 0.065,
+   "vs_spectrum": -0.002,
+   "folds_better": 10,
+   "p": 0.9322
+  },
+  "luna": {
+   "r2": 0.546,
+   "sd": 0.09,
+   "vs_spectrum": -0.065,
+   "folds_better": 6,
+   "p": 0.2282
+  },
+  "reve": {
+   "r2": 0.638,
+   "sd": 0.059,
+   "vs_spectrum": 0.028,
+   "folds_better": 15,
+   "p": 0.4577
+  },
+  "signaljepa": {
+   "r2": 0.21,
+   "sd": 0.089,
+   "vs_spectrum": -0.4,
+   "folds_better": 0,
+   "p": 0.0
+  },
+  "steegformer": {
+   "r2": 0.652,
+   "sd": 0.066,
+   "vs_spectrum": 0.041,
+   "folds_better": 18,
+   "p": 0.3158
+  }
+ },
+ "holdout": {
+  "full spectrum": {
+   "r2": 0.562,
+   "ci95": [
+    0.503,
+    0.617
+   ]
+  },
+  "baselines (F+B+C)": {
+   "r2": 0.582,
+   "ci95": [
+    0.522,
+    0.636
+   ]
+  },
+  "biot": {
+   "r2": 0.543,
+   "ci95": [
+    0.484,
+    0.601
+   ]
+  },
+  "baselines + biot": {
+   "r2": 0.604,
+   "ci95": [
+    0.541,
+    0.661
+   ]
+  },
+  "biot random": {
+   "r2": 0.503,
+   "ci95": [
+    0.439,
+    0.564
+   ]
+  },
+  "baselines + biot random": {
+   "r2": 0.599,
+   "ci95": [
+    0.541,
+    0.652
+   ]
+  },
+  "labram": {
+   "r2": 0.566,
+   "ci95": [
+    0.501,
+    0.624
+   ]
+  },
+  "baselines + labram": {
+   "r2": 0.601,
+   "ci95": [
+    0.543,
+    0.654
+   ]
+  },
+  "labram random": {
+   "r2": 0.162,
+   "ci95": [
+    0.106,
+    0.215
+   ]
+  },
+  "baselines + labram random": {
+   "r2": 0.573,
+   "ci95": [
+    0.514,
+    0.627
+   ]
+  }
+ },
+ "holdout_compare": {
+  "biot vs full spectrum": {
+   "diff": -0.019,
+   "ci95": [
+    -0.071,
+    0.035
+   ]
+  },
+  "labram vs full spectrum": {
+   "diff": 0.004,
+   "ci95": [
+    -0.033,
+    0.041
+   ]
+  },
+  "baselines + biot vs baselines (F+B+C)": {
+   "diff": 0.022,
+   "ci95": [
+    -0.003,
+    0.046
+   ]
+  },
+  "baselines + biot random vs baselines (F+B+C)": {
+   "diff": 0.017,
+   "ci95": [
+    0.001,
+    0.033
+   ]
+  },
+  "baselines + biot vs baselines + biot random": {
+   "diff": 0.005,
+   "ci95": [
+    -0.015,
+    0.024
+   ]
+  },
+  "baselines + labram vs baselines (F+B+C)": {
+   "diff": 0.019,
+   "ci95": [
+    0.001,
+    0.036
+   ]
+  },
+  "baselines + labram random vs baselines (F+B+C)": {
+   "diff": -0.009,
+   "ci95": [
+    -0.02,
+    0.001
+   ]
+  }
+ }
+}
