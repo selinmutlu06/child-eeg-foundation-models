@@ -120,176 +120,51 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
   <h1>What do EEG foundation models learn about children's brains?</h1>
   <p class="sub">Eleven foundation models compared with the EEG power spectrum in 373 children</p>
   <p>Selin Mutlu, Duke University</p>
-  <p>Working notes, last updated November 7, 2026</p>
+  <p>Working notes, last updated November 8, 2026</p>
   <p class="links"><a href="https://github.com/selinmutlu06/child-eeg-foundation-models" target="_blank" rel="noopener noreferrer">Code</a><a href="https://neuromechanist.github.io/data/hbn" target="_blank" rel="noopener noreferrer">HBN-EEG data</a><a href="https://arxiv.org/abs/2405.18765v1" target="_blank" rel="noopener noreferrer">LaBraM paper</a><a href="https://selinmutlu.com" target="_blank" rel="noopener noreferrer">selinmutlu.com</a></p>
 </header>
 
 <main>
 <figure>
-  <canvas id="eeg" role="img" aria-label="Four seconds of EEG from 19 scalp electrodes. O1 and O2 show a regular rhythm near 10 cycles per second."></canvas>
-  <figcaption><b>Figure 1.</b> Four seconds of eyes-closed EEG from one 10-year-old in HBN (sub-NDARAM704GKZ), low-passed at 30 Hz. The rhythm in O1 and O2 is posterior alpha.</figcaption>
-</figure>
-
-<p class="abstract">I'm interested in whether EEG foundation models learn information about brain development and autism beyond the spectral features we already measure. As a first test, I predicted age from eyes-closed resting EEG in <b>373 children</b> from the Healthy Brain Network. Embeddings from pretrained LaBraM reached a nested cross-validated <b>R² of 0.59</b>, compared with <b>0.49</b> for standard spectral features and <b>0.51</b> for the same architecture with random weights. That corresponds to a mean absolute error of <b>1.69 years</b> versus <b>1.85 years</b>. Pretrained LaBraM had the higher R² in 24 of 25 test folds (corrected resampled t-test, p = .013). However, when I removed the information the standard features can explain from the embeddings, pretrained and random-weights LaBraM kept similar amounts of age information (R² 0.09 and 0.12). And when I compared LaBraM with the full power spectrum (every half-hertz from 1 to 45 Hz on all 19 channels) instead of 229 summary features, the two performed the same (R² 0.60 vs. 0.59, p = .90), and LaBraM kept no significant age information once the full spectrum was removed. So with a linear readout, LaBraM's advantage over standard features comes from the standard features summarizing away spectral detail, not from information beyond the spectrum. I then ran the same comparison on ten other EEG foundation models. None of them predicted age significantly better than the full spectrum, and adding any of them to the spectrum did not significantly help. The one exception was BIOT, which uses a bipolar montage. When I fit everything on these 373 children and tested once on 612 new children from later releases, adding pretrained BIOT to the spectrum and connectivity baselines improved R² by 0.05 (95% CI 0.02 to 0.08), while BIOT with random weights added nothing. It is not an autism result. It is a baseline for the autism question.</p>
-
-<figure>
   <div class="chart w" id="fmchart"></div>
-  <figcaption><b>Figure 2.</b> Predicting age from resting EEG with eleven foundation models (n = 373, mean ± SD over 25 nested folds). Filled dots are pretrained models, open dots the same architecture with random weights. The dashed line and shaded band are the full power spectrum from the same windows (R² 0.60 ± 0.07). Details in section 3.11.</figcaption>
+  <figcaption><b>Figure 1.</b> Predicting age from resting EEG with eleven foundation models (n = 373, mean ± SD over 25 nested folds). Filled dots are pretrained models, open dots the same architecture with random weights. The dashed line and shaded band are the full power spectrum from the same windows (R² 0.60 ± 0.07). Details in section 3.1.</figcaption>
 </figure>
 
-<nav class="toc" aria-label="Contents"><p class="toc-h">Contents</p><ol><li><a href="#motivation">1. Motivation</a></li><li><a href="#data">2. Data and pipeline</a></li><li><a href="#results">3. Results</a><ol><li><a href="#age">3.1 Pretrained LaBraM predicts age more accurately</a></li><li><a href="#folds">3.2 The difference is consistent across folds</a></li><li><a href="#pretraining">3.3 The improvement depends on pretraining</a></li><li><a href="#combined">3.4 LaBraM appears to contain most of the standard-feature information</a></li><li><a href="#residual">3.5 The pretraining advantage is mostly in spectral information</a></li><li><a href="#full-spectrum">3.6 The full spectrum matches LaBraM</a></li><li><a href="#sample-size">3.7 The difference appeared with a larger sample</a></li><li><a href="#development">3.8 Known developmental changes show up in the data</a></li><li><a href="#cbcl">3.9 Attention and p-factor were not predicted</a></li><li><a href="#movies">3.10 Movie watching did not change this</a></li><li><a href="#other-models">3.11 Ten other foundation models</a></li><li><a href="#holdout">3.12 Held-out test on 612 new children</a></li></ol></li><li><a href="#prior-work">4. Prior work on autism EEG markers</a></li><li><a href="#next">5. Next steps</a></li><li><a href="#limitations">6. Limitations</a></li><li><a href="#references">References</a></li></ol></nav>
+<p class="abstract">I'm interested in whether EEG foundation models learn information about children's brains beyond the power spectrum, which can already be measured directly. As a first test before autism, I predicted age from eyes-closed resting EEG in <b>373 children</b> from the Healthy Brain Network, comparing frozen embeddings from <b>11 foundation models</b> with a ridge model on the full power spectrum (every half-hertz from 1 to 45 Hz on 19 channels). The spectrum reached a cross-validated <b>R² of 0.60</b>. No model did significantly better, and adding a model to the spectrum never helped significantly. The one exception was <b>BIOT</b>, the only model with a bipolar montage, which kept a small pretrained signal beyond the spectrum, the bipolar spectrum, and coherence between neighboring electrodes. That signal replicated when I fit on the 373 children and tested once on <b>612 new children</b> from later releases (+0.05 R², 95% CI 0.02 to 0.08), while BIOT with random weights added nothing. Removing frequency bands and electrode groups from BIOT's input suggests the signal spans 1 to 30 Hz over posterior channels and is unlikely to be muscle or eye artifact. None of the feature sets predicted parent-reported attention or p-factor scores, at rest or during movies. These are age results, not autism results. They set the baseline for the autism question.</p>
+
+<nav class="toc" aria-label="Contents"><p class="toc-h">Contents</p><ol><li><a href="#motivation">1. Motivation</a></li><li><a href="#data">2. Data and pipeline</a></li><li><a href="#results">3. Results</a><ol><li><a href="#other-models">3.1 No foundation model beats the full spectrum</a></li><li><a href="#biot">3.2 BIOT keeps a signal the spectrum and connectivity miss</a></li><li><a href="#holdout">3.3 The BIOT result replicates in 612 new children</a></li><li><a href="#ablation">3.4 BIOT's extra signal spans 1 to 30 Hz over posterior channels</a></li><li><a href="#cbcl">3.5 Questionnaire scores were not predicted, at rest or during movies</a></li></ol></li><li><a href="#prior-work">4. Prior work on autism EEG markers</a></li><li><a href="#next">5. Next steps</a></li><li><a href="#limitations">6. Limitations</a></li><li><a href="#appendix">Appendix. The first analysis, LaBraM alone</a><ol><li><a href="#age">A.1 Pretrained LaBraM predicts age more accurately</a></li><li><a href="#folds">A.2 The difference is consistent across folds</a></li><li><a href="#pretraining">A.3 The improvement depends on pretraining</a></li><li><a href="#combined">A.4 LaBraM appears to contain most of the standard-feature information</a></li><li><a href="#residual">A.5 The pretraining advantage is mostly in spectral information</a></li><li><a href="#full-spectrum">A.6 The full spectrum matches LaBraM</a></li><li><a href="#sample-size">A.7 The difference appeared with a larger sample</a></li><li><a href="#development">A.8 Known developmental changes show up in the data</a></li></ol></li><li><a href="#references">References</a></li></ol></nav>
 
 <h2 id="motivation">1. Motivation</h2>
 <p>Many studies have looked for EEG differences in autism, but the effects that replicate in large samples tend to be small and inconsistent. Most of this work tests features defined in advance, such as power in each frequency band.</p>
 <p>Foundation models are pretrained on large amounts of unlabeled EEG, so they could in principle capture structure that predefined features miss. Their representations are also hard to interpret, and recent work (Tang et al., 2026) suggests that much of what they encode overlaps with spectral power. Before asking whether they carry autism-related information, I wanted to check whether they carry information about children's EEG that standard features do not. Age is a reasonable first target because it has a strong, well-characterized EEG signature and is also a major confound in autism EEG studies.</p>
-<p>This page covers the first step. The next steps are to run the same comparison with autism diagnoses (section 5) and then to use sparse autoencoders to see what the relevant embedding features correspond to.</p>
+<p>This page covers that first step for age. The next steps are to run the same comparison with autism diagnoses (section 5) and then to use sparse autoencoders to see what the relevant embedding features correspond to.</p>
 
 <h2 id="data">2. Data and pipeline</h2>
+<figure>
+  <canvas id="eeg" role="img" aria-label="Four seconds of EEG from 19 scalp electrodes. O1 and O2 show a regular rhythm near 10 cycles per second."></canvas>
+  <figcaption><b>Figure 2.</b> Four seconds of eyes-closed EEG from one 10-year-old in HBN (sub-NDARAM704GKZ), low-passed at 30 Hz. The rhythm in O1 and O2 is posterior alpha.</figcaption>
+</figure>
 <p>HBN collected 128-channel EEG from children and adolescents aged 5 to 21. I used the resting-state task from releases 1 to 3 (405 participants with resting data, 373 after quality control). Each recording went through the same steps:</p>
 <div class="side">
   <figure style="margin:4px 0 0">
     <div class="chart" id="headmap"><svg role="img" aria-label="Top view of the head showing the 19 electrode positions used" fill="currentColor" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 170.28 167.372687" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style> </defs> <g id="figure_1"> <g id="patch_1"> <path d="M 0 167.372687  L 170.28 167.372687  L 170.28 0  L 0 0  L 0 167.372687  z " style="fill: none"/> </g> <g id="axes_1"> <g id="PathCollection_1"> <defs> <path id="C0_0_1a44dc6c4b" d="M 0 1.870829  C 0.49615 1.870829 0.972045 1.673706 1.322876 1.322876  C 1.673706 0.972045 1.870829 0.49615 1.870829 -0  C 1.870829 -0.49615 1.673706 -0.972045 1.322876 -1.322876  C 0.972045 -1.673706 0.49615 -1.870829 0 -1.870829  C -0.49615 -1.870829 -0.972045 -1.673706 -1.322876 -1.322876  C -1.673706 -0.972045 -1.870829 -0.49615 -1.870829 0  C -1.870829 0.49615 -1.673706 0.972045 -1.322876 1.322876  C -0.972045 1.673706 -0.49615 1.870829 0 1.870829  z "/> </defs> <use xlink:href="#C0_0_1a44dc6c4b" x="66.590811" y="29.127098" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="102.204157" y="28.629824" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="42.229276" y="54.214701" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="59.234646" y="53.057709" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="84.555181" y="51.664186" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="110.335049" y="52.600178" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="127.964746" y="53.230072" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="35.613248" y="88.976752" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="53.706023" y="84.990119" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="84.530723" y="83.308523" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="115.671416" y="84.896178" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="132.919161" y="88.754653" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="43.48825" y="120.857485" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="58.783345" y="117.257387" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="84.357639" y="116.460475" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="110.776503" y="117.263043" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="124.71117" y="120.801524" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="68.071723" y="140.565889" style="stroke: currentColor"/> <use xlink:href="#C0_0_1a44dc6c4b" x="100.077678" y="140.428167" style="stroke: currentColor"/> </g> <g id="line2d_1"> <path d="M 154.692933 88.902814  L 154.555687 84.535549  L 154.144488 80.18552  L 153.46096 75.869894  L 152.5078 71.605703  L 151.28877 67.409775  L 149.808682 63.298671  L 148.073376 59.288615  L 146.0897 55.395433  L 143.865484 51.634488  L 141.409505 48.020625  L 138.731456 44.568105  L 135.841906 41.290554  L 132.752259 38.200907  L 129.474708 35.311357  L 126.022188 32.633309  L 122.408325 30.17733  L 118.647381 27.953114  L 114.754199 25.969438  L 110.744142 24.234132  L 106.633038 22.754043  L 102.437111 21.535014  L 98.17292 20.581854  L 93.857294 19.898326  L 89.507265 19.487127  L 85.14 19.34988  L 80.772735 19.487127  L 76.422706 19.898326  L 72.10708 20.581854  L 67.842889 21.535014  L 63.646962 22.754043  L 59.535858 24.234132  L 55.525801 25.969438  L 51.632619 27.953114  L 47.871675 30.17733  L 44.257812 32.633309  L 40.805292 35.311357  L 37.527741 38.200907  L 34.438094 41.290554  L 31.548544 44.568105  L 28.870495 48.020625  L 26.414516 51.634488  L 24.1903 55.395433  L 22.206624 59.288615  L 20.471318 63.298671  L 18.99123 67.409775  L 17.7722 71.605703  L 16.81904 75.869894  L 16.135512 80.18552  L 15.724313 84.535549  L 15.587067 88.902814  L 15.724313 93.270079  L 16.135512 97.620108  L 16.81904 101.935734  L 17.7722 106.199925  L 18.99123 110.395852  L 20.471318 114.506956  L 22.206624 118.517012  L 24.1903 122.410195  L 26.414516 126.171139  L 28.870495 129.785002  L 31.548544 133.237522  L 34.438094 136.515073  L 37.527741 139.60472  L 40.805292 142.49427  L 44.257812 145.172319  L 47.871675 147.628298  L 51.632619 149.852514  L 55.525801 151.836189  L 59.535858 153.571496  L 63.646962 155.051584  L 67.842889 156.270614  L 72.10708 157.223773  L 76.422706 157.907301  L 80.772735 158.3185  L 85.14 158.455747  L 89.507265 158.3185  L 93.857294 157.907301  L 98.17292 157.223773  L 102.437111 156.270614  L 106.633038 155.051584  L 110.744142 153.571496  L 114.754199 151.836189  L 118.647381 149.852514  L 122.408325 147.628298  L 126.022188 145.172319  L 129.474708 142.49427  L 132.752259 139.60472  L 135.841906 136.515073  L 138.731456 133.237522  L 141.409505 129.785002  L 143.865484 126.171139  L 146.0897 122.410195  L 148.073376 118.517012  L 149.808682 114.506956  L 151.28877 110.395852  L 152.5078 106.199925  L 153.46096 101.935734  L 154.144488 97.620108  L 154.555687 93.270079  L 154.692933 88.902814  " style="fill: none; stroke: currentColor; stroke-linecap: square"/> </g> <g id="line2d_2"> <path d="M 70.572868 20.892453  L 85.14 8.91694  L 99.707132 20.892453  " style="fill: none; stroke: currentColor; stroke-linecap: square"/> </g> <g id="line2d_3"> <path d="M 16.004384 81.182438  L 14.196008 78.122109  L 13.083161 78.010824  L 11.427801 78.525516  L 9.758531 81.182438  L 10.022832 89.667896  L 9.049091 101.86748  L 11.135679 107.167414  L 14.196008 108.155066  L 17.117231 105.581607  " style="fill: none; stroke: currentColor; stroke-linecap: square"/> </g> <g id="line2d_4"> <path d="M 154.275616 81.182438  L 156.083992 78.122109  L 157.196839 78.010824  L 158.852199 78.525516  L 160.521469 81.182438  L 160.257168 89.667896  L 161.230909 101.86748  L 159.144321 107.167414  L 156.083992 108.155066  L 153.162769 105.581607  " style="fill: none; stroke: currentColor; stroke-linecap: square"/> </g> <g id="text_1"> <text style="font-size: 8px;  text-anchor: start" x="68.329634" y="32.037254" transform="rotate(-0 68.329634 32.037254)">Fp1</text> </g> <g id="text_2"> <text style="font-size: 8px;  text-anchor: start" x="103.942981" y="31.53998" transform="rotate(-0 103.942981 31.53998)">Fp2</text> </g> <g id="text_3"> <text style="font-size: 8px;  text-anchor: start" x="43.968099" y="57.124858" transform="rotate(-0 43.968099 57.124858)">F7</text> </g> <g id="text_4"> <text style="font-size: 8px;  text-anchor: start" x="60.973469" y="55.967866" transform="rotate(-0 60.973469 55.967866)">F3</text> </g> <g id="text_5"> <text style="font-size: 8px;  text-anchor: start" x="86.294005" y="54.574342" transform="rotate(-0 86.294005 54.574342)">Fz</text> </g> <g id="text_6"> <text style="font-size: 8px;  text-anchor: start" x="112.073873" y="55.510334" transform="rotate(-0 112.073873 55.510334)">F4</text> </g> <g id="text_7"> <text style="font-size: 8px;  text-anchor: start" x="129.703569" y="56.140228" transform="rotate(-0 129.703569 56.140228)">F8</text> </g> <g id="text_8"> <text style="font-size: 8px;  text-anchor: start" x="37.352071" y="91.886908" transform="rotate(-0 37.352071 91.886908)">T7</text> </g> <g id="text_9"> <text style="font-size: 8px;  text-anchor: start" x="55.444846" y="87.900276" transform="rotate(-0 55.444846 87.900276)">C3</text> </g> <g id="text_10"> <text style="font-size: 8px;  text-anchor: start" x="86.269547" y="86.21868" transform="rotate(-0 86.269547 86.21868)">Cz</text> </g> <g id="text_11"> <text style="font-size: 8px;  text-anchor: start" x="117.410239" y="87.806334" transform="rotate(-0 117.410239 87.806334)">C4</text> </g> <g id="text_12"> <text style="font-size: 8px;  text-anchor: start" x="134.657984" y="91.664809" transform="rotate(-0 134.657984 91.664809)">T8</text> </g> <g id="text_13"> <text style="font-size: 8px;  text-anchor: start" x="45.227073" y="123.767641" transform="rotate(-0 45.227073 123.767641)">P7</text> </g> <g id="text_14"> <text style="font-size: 8px;  text-anchor: start" x="60.522169" y="120.167543" transform="rotate(-0 60.522169 120.167543)">P3</text> </g> <g id="text_15"> <text style="font-size: 8px;  text-anchor: start" x="86.096462" y="119.370631" transform="rotate(-0 86.096462 119.370631)">Pz</text> </g> <g id="text_16"> <text style="font-size: 8px;  text-anchor: start" x="112.515327" y="120.173199" transform="rotate(-0 112.515327 120.173199)">P4</text> </g> <g id="text_17"> <text style="font-size: 8px;  text-anchor: start" x="126.449993" y="123.71168" transform="rotate(-0 126.449993 123.71168)">P8</text> </g> <g id="text_18"> <text style="font-size: 8px;  text-anchor: start" x="69.810547" y="143.476045" transform="rotate(-0 69.810547 143.476045)">O1</text> </g> <g id="text_19"> <text style="font-size: 8px;  text-anchor: start" x="101.816501" y="143.338323" transform="rotate(-0 101.816501 143.338323)">O2</text> </g> </g> </g> </svg> </div>
-    <figcaption><b>Figure 3.</b> The 19 standard 10-20 positions LaBraM expects (plotted with MNE). Each one is taken from the nearest electrode on HBN's 128-channel EGI net.</figcaption>
+    <figcaption><b>Figure 3.</b> The 19 standard 10-20 positions the models expect (plotted with MNE). Each one is taken from the nearest electrode on HBN's 128-channel EGI net.</figcaption>
   </figure>
   <ol>
     <li>Interpolate noisy channels, re-reference to the average, band-pass 0.5 to 75 Hz, and notch filter at 60 Hz.</li>
     <li>Take the five 40 s eyes-closed blocks and cut them into 15 s windows at 200 Hz. Reject windows with peak-to-peak amplitude above 500 µV. Participants need at least 2 clean windows.</li>
-    <li>Compute three feature sets: <b>standard features</b> (229 values: absolute and relative band power, aperiodic offset and exponent, alpha peak frequency), <b style="color:var(--pre)">pretrained LaBraM</b> (mean token embedding from each of its 12 layers), and <b style="color:var(--rand)">LaBraM with random weights</b> (same architecture, untrained).</li>
-    <li>Fit ridge regression with nested 5-fold cross-validation, repeated 5 times. The LaBraM layer is selected within each training set, so test participants do not influence that choice.</li>
+    <li>Compute the <b>full log power spectrum</b> (1 to 45 Hz every 0.5 Hz on 19 channels, 1,691 values) and, for each of 11 <b style="color:var(--pre)">foundation models</b>, the mean token embedding from each transformer block, both pretrained and with <b style="color:var(--rand)">random weights</b>. Each model gets its own preprocessing (section 3.1).</li>
+    <li>Fit ridge regression with nested 5-fold cross-validation, repeated 5 times. The layer is selected within each training set, so test participants do not influence that choice.</li>
     <li>Report accuracy (R²) and a robustness score adapted from Carson et al. (2024). My version compares the predictions of two models trained on different subsets, rather than their coefficients, so it applies to embeddings.</li>
   </ol>
 </div>
 
 <h2 id="results">3. Results</h2>
-<h3 id="age">3.1 Pretrained LaBraM predicts age more accurately</h3>
-<p>Pretrained LaBraM explained about 59% of the variance in age, compared with about 49% for standard features. Its predictions were off by 1.69 years on average, compared with 1.85 years for standard features and 2.83 years for always predicting the mean age. It also had the smallest spread across folds and the highest robustness score.</p>
-<figure>
-  <div class="chart w" id="r1"></div>
-  <figcaption><b>Figure 4.</b> Nested cross-validated R² for predicting age (mean ± SD over 25 test folds, n = 373). MAE is mean absolute error in years. Robustness R reflects how well two models trained on different participants agree when predicting the same held-out participants (not computed for the combined model).</figcaption>
-</figure>
+<h3 id="other-models">3.1 No foundation model beats the full spectrum</h3>
+<p>The baseline is a ridge model on the full log power spectrum, every half-hertz from 1 to 45 Hz on all 19 channels (1,691 values per child). I compared it with eleven foundation models available through Braindecode and Hugging Face: LaBraM, BIOT, ST-EEGFormer (small), EEGPT, REVE (base), CBraMod, EEGDINO (small), LUNA (base), SignalJEPA, CodeBrain, and BENDR. Each model received the same four 15 s eyes-closed windows per child, prepared the way its own paper describes (channel order, sampling rate, segment length, and amplitude scaling). I took the mean-pooled output of each transformer block, selected the block inside the training folds, and ran the same 25 nested folds. The full spectrum was recomputed from the same four windows, and every model was also run with random weights.</p>
 <div class="tbl">
   <table>
-    <caption><b>Table 1.</b> Predicting age (n = 373), mean (SD) over 25 nested cross-validation folds.</caption>
-    <thead><tr><th>Feature set</th><th class="r">R²</th><th class="r">MAE (years)</th><th class="r">Robustness R</th></tr></thead>
-    <tbody>
-      <tr><td>Standard features</td><td class="r">0.49 (0.11)</td><td class="r">1.85 (0.16)</td><td class="r">0.41</td></tr>
-      <tr><td>LaBraM pretrained</td><td class="r">0.59 (0.09)</td><td class="r">1.69 (0.16)</td><td class="r">0.48</td></tr>
-      <tr><td>LaBraM random weights</td><td class="r">0.51 (0.07)</td><td class="r">1.91 (0.14)</td><td class="r">0.38</td></tr>
-      <tr><td>Standard + LaBraM pretrained</td><td class="r">0.61 (0.09)</td><td class="r">1.67 (0.16)</td><td class="r"></td></tr>
-      <tr><td>Predict the mean age</td><td class="r">0</td><td class="r">2.83</td><td class="r"></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<h3 id="folds">3.2 The difference is consistent across folds</h3>
-<p>To check that the average was not driven by a few splits, I compared the feature sets fold by fold on the same test participants. Because repeated cross-validation folds overlap, the counts alone are not independent tests, so I also used the corrected resampled t-test of Nadeau &amp; Bengio (2003), which accounts for that overlap.</p>
-<figure>
-  <div class="chart w" id="waffle"></div>
-  <figcaption><b>Figure 5.</b> Each box is one test fold. A filled box means the first feature set had the higher R² on that fold. The number on the right is the median difference in R².</figcaption>
-</figure>
-<div class="tbl">
-  <table>
-    <caption><b>Table 2.</b> Paired comparisons of R² for age on the same 25 test folds. p-values are from the corrected resampled t-test, with Holm correction across the five comparisons.</caption>
-    <thead><tr><th>Comparison</th><th class="r">Mean ΔR²</th><th class="r">Folds better</th><th class="r">p</th><th class="r">p (Holm)</th></tr></thead>
-    <tbody>
-      <tr><td>Pretrained vs. standard</td><td class="r">+0.10</td><td class="r">24 / 25</td><td class="r">.013</td><td class="r">.047</td></tr>
-      <tr><td>Pretrained vs. random weights</td><td class="r">+0.09</td><td class="r">23 / 25</td><td class="r">.012</td><td class="r">.047</td></tr>
-      <tr><td>Random weights vs. standard</td><td class="r">+0.01</td><td class="r">11 / 25</td><td class="r">.75</td><td class="r">.75</td></tr>
-      <tr><td>Standard + pretrained vs. standard</td><td class="r">+0.12</td><td class="r">25 / 25</td><td class="r">.003</td><td class="r">.017</td></tr>
-      <tr><td>Standard + pretrained vs. pretrained</td><td class="r">+0.02</td><td class="r">16 / 25</td><td class="r">.48</td><td class="r">.95</td></tr>
-    </tbody>
-  </table>
-</div>
-<p>The differences are statistically reliable but modest, and they survive correction only narrowly for the two main comparisons.</p>
-
-<h3 id="pretraining">3.3 The improvement depends on pretraining</h3>
-<p>The random-weights model produces embeddings of the same size as the pretrained one but performed about the same as the standard features. Every pretrained layer scored higher than every random-weights layer, and layers 2 to 4 were already close to the best, which suggests much of the age-related information is present early in the network.</p>
-<figure>
-  <div class="chart w" id="layerchart"></div>
-  <figcaption><b>Figure 6.</b> R² for age from each layer evaluated separately. This is not nested, so the best layer is slightly optimistic. Nested selection chose layer 3 most often (7 of 25 folds). The dashed line is the standard-feature result.</figcaption>
-</figure>
-
-<h3 id="combined">3.4 LaBraM appears to contain most of the standard-feature information</h3>
-<p>To test whether LaBraM adds information beyond the standard features, or simply re-encodes them, I fit a model on both together. Combining them beat standard features alone in all 25 folds (+0.12 R², p = .017 after correction), but it did not meaningfully beat LaBraM alone (+0.02 R², 16 of 25 folds, p = .48). In other words, the standard features add little once LaBraM is included, while LaBraM adds a lot to the standard features. This fits with Tang et al. (2026), who found that foundation-model embeddings encode much of the spectrum. Nested selection most often chose layer 8 for the combined model, compared with layer 3 for LaBraM alone.</p>
-
-<h3 id="residual">3.5 The pretraining advantage is mostly in spectral information</h3>
-<p>The combined model cannot tell whether LaBraM adds new information or just a cleaner version of the spectrum. To separate these, I removed from each embedding everything a ridge regression on the standard features could explain (fit on the training fold only) and predicted age from what was left.</p>
-<div class="tbl">
-  <table>
-    <caption><b>Table 3.</b> Predicting age from residualized features (n = 373, 25 nested folds). p tests whether R² is above zero, using the corrected resampled t-test.</caption>
-    <thead><tr><th>Features</th><th class="r">R² (SD)</th><th class="r">Folds above 0</th><th class="r">p</th></tr></thead>
-    <tbody>
-      <tr><td>Pretrained LaBraM, standard features removed</td><td class="r">0.09 (0.06)</td><td class="r">22 / 25</td><td class="r">.024</td></tr>
-      <tr><td>Random-weights LaBraM, standard features removed</td><td class="r">0.12 (0.09)</td><td class="r">22 / 25</td><td class="r">.024</td></tr>
-      <tr><td>Standard features, pretrained LaBraM removed</td><td class="r">0.17 (0.10)</td><td class="r">25 / 25</td><td class="r">.005</td></tr>
-    </tbody>
-  </table>
-</div>
-<p>Both pretrained and random-weights embeddings kept a small amount of age information after the standard features were removed, and the two did not differ (pretrained minus random: −0.03 R², 8 of 25 folds, p = .45). So the leftover signal does not depend on pretraining. It is more likely detail that any convolutional projection of the raw signal picks up and that 229 summary features miss. Since pretrained LaBraM beats random weights by about 0.09 R² overall but not on the residuals, the pretraining advantage appears to sit in the part shared with the standard features. A reasonable reading is that pretraining makes spectral information easier to read out linearly, rather than adding new kinds of information. This is close to the "better spectral estimator" explanation I wanted to rule in or out.</p>
-<p>The third row should be read cautiously. Ridge residualization removes only part of the explainable variance, so some shared information remains in every residual. That likely explains why standard features keep R² = 0.17 after removing LaBraM even though adding them to LaBraM barely helped (section 3.4). Section 3.6 runs a more direct test.</p>
-
-<h3 id="full-spectrum">3.6 The full spectrum matches LaBraM</h3>
-<p>The most direct test of the "better spectral reader" explanation is to give the linear model the full power spectrum instead of 229 summaries: the log power at every half-hertz from 1 to 45 Hz on all 19 channels (1,691 values per child), from the same cleaned windows. I reprocessed all 373 children for this and used the same 25 nested folds.</p>
-<div class="tbl">
-  <table>
-    <caption><b>Table 4.</b> Predicting age with the full power spectrum (n = 373, 25 nested folds). p-values are from the corrected resampled t-test.</caption>
-    <thead><tr><th>Features</th><th class="r">R² (SD)</th><th class="r">MAE (years)</th></tr></thead>
-    <tbody>
-      <tr><td>Standard features (229)</td><td class="r">0.51 (0.11)</td><td class="r">1.82</td></tr>
-      <tr><td>Full spectrum (1,691)</td><td class="r">0.60 (0.07)</td><td class="r">1.70</td></tr>
-      <tr><td>LaBraM pretrained</td><td class="r">0.59 (0.09)</td><td class="r">1.69</td></tr>
-      <tr><td>Full spectrum + LaBraM pretrained</td><td class="r">0.65 (0.06)</td><td class="r">1.59</td></tr>
-      <tr><td>LaBraM, full spectrum removed</td><td class="r">0.04 (0.05)</td><td class="r"></td></tr>
-      <tr><td>Full spectrum, LaBraM removed</td><td class="r">0.33 (0.18)</td><td class="r"></td></tr>
-    </tbody>
-  </table>
-</div>
-<p>The full spectrum beat the standard features in all 25 folds (+0.09 R², p = .012) and performed the same as LaBraM (LaBraM better in 10 of 25 folds, p = .90). After removing what the full spectrum explains, LaBraM's embeddings kept almost no age information (R² 0.04, 20 of 25 folds above zero, p = .14). The reverse was not true: the full spectrum kept substantial age information after removing what LaBraM explains (R² 0.33, p = .004), though incomplete ridge residualization inflates this number, as in section 3.5. Combining the two did slightly better than either alone (0.65; vs. full spectrum p = .027, vs. LaBraM p = .083), so LaBraM may add a small amount, but most of what it carries about age is already in the spectrum.</p>
-<p>Together with section 3.5, this answers the question I started with, at least for age and a linear readout. Pretrained LaBraM looks like a good reader of the EEG spectrum. Its advantage over the usual 229 features comes from those features discarding spectral detail, and the same advantage is available without a foundation model. This matches Tang et al. (2026). Standard features scored 0.51 in this rerun rather than 0.49, from a small difference in standard-feature extraction between computing environments; the LaBraM embeddings were identical.</p>
-
-<h3 id="sample-size">3.7 The difference appeared with a larger sample</h3>
-<p>With release 1 alone (123 participants), the three feature sets performed similarly, and individual recordings had a large effect on single folds. With releases 1 to 3, pretrained LaBraM improved while the other two stayed about the same. This is a reminder that results from smaller samples should be treated cautiously, and I plan to check the result again as more releases are added.</p>
-<figure>
-  <div class="chart w" id="slope"></div>
-  <figcaption><b>Figure 7.</b> Same pipeline and evaluation with 123 and with 373 participants.</figcaption>
-</figure>
-
-<h3 id="development">3.8 Known developmental changes show up in the data</h3>
-<p>Two well-established developmental changes appear in this sample: alpha peak frequency increases with age and the aperiodic exponent decreases. The LaBraM embeddings also show an age gradient without being trained on age.</p>
-<figure>
-  <div class="two">
-    <div class="chart" id="scatter-apf"></div>
-    <div class="chart" id="scatter-aper"></div>
-  </div>
-  <div class="chart" id="pca" style="margin-top:12px"></div>
-  <figcaption><b>Figure 8.</b> Release 1 only (n = 123). <b>(a)</b> Alpha peak frequency vs. age. <b>(b)</b> Aperiodic exponent vs. age. <b>(c, d)</b> Each participant's layer-3 embedding projected onto its first two principal components, colored by age (light = 5, dark = 21). One component correlates with age in each (Spearman ρ = 0.68 pretrained, 0.55 random). These plots are descriptive. The cross-validated results in Figure 4 are the main test.</figcaption>
-</figure>
-
-<h3 id="cbcl">3.9 Attention and p-factor were not predicted</h3>
-<p>HBN also includes parent-reported CBCL scores. For the attention factor and the p-factor, all three feature sets had R² near zero with 362 participants (attention: −0.01, 0.00, and 0.00 for standard, pretrained, and random; p-factor: −0.02, −0.01, and 0.00). Neither standard features nor LaBraM embeddings predicted these scores from eyes-closed resting EEG. This suggests resting-state EEG may also be limited for autism-related traits, which is consistent with the literature below.</p>
-
-<h3 id="movies">3.10 Movie watching did not change this</h3>
-<p>Resting state might simply be the wrong condition, so I repeated the analysis on the same children's EEG while they watched two short films, <i>The Present</i> (400 usable recordings) and <i>Despicable Me</i> (402). Besides the same spectral and LaBraM features, I measured neural synchrony: for each child and electrode, the correlation between their 1 to 20 Hz signal (and their alpha and theta power over time) and the average of all other children at the same moment of the film.</p>
-<div class="tbl">
-  <table>
-    <caption><b>Table 5.</b> Nested cross-validated R² on the same children (n = 323 for age, 313 for the CBCL scores). Synchrony uses 57 features (19 electrodes, three signals).</caption>
-    <thead><tr><th>Target</th><th class="r">Rest, spectrum</th><th class="r">Rest, LaBraM</th><th class="r">Movie, spectrum</th><th class="r">Movie, LaBraM</th><th class="r">Movie, synchrony</th></tr></thead>
-    <tbody>
-      <tr><td>Age</td><td class="r">0.59</td><td class="r">0.60</td><td class="r">0.57</td><td class="r">0.59</td><td class="r">0.25</td></tr>
-      <tr><td>Attention</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">0.00</td></tr>
-      <tr><td>p-factor</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">0.00</td></tr>
-      <tr><td>Internalizing</td><td class="r">−0.01</td><td class="r">0.00</td><td class="r">−0.02</td><td class="r">0.00</td><td class="r">0.01</td></tr>
-      <tr><td>Externalizing</td><td class="r">0.04</td><td class="r">0.05</td><td class="r">−0.02</td><td class="r">0.02</td><td class="r">0.00</td></tr>
-    </tbody>
-  </table>
-</div>
-<p>Movie EEG predicted age about as well as rest, and synchrony carried age information on its own (R² 0.25, and 0.19 in <i>Despicable Me</i>), consistent with Petroni et al. (2018), who found that synchrony to these films declines with age in HBN. Adding synchrony to the movie spectrum did not improve age prediction (p = .27). None of the feature sets, at rest or during either film, predicted the four CBCL scores. The one nominally significant value (rest LaBraM for externalizing, uncorrected p = .02) does not survive correction across the roughly 40 tests here. Mean synchrony was also unrelated to the CBCL scores after controlling for age and data quality (all |ρ| &lt; 0.09). My synchrony measure is simpler than the correlated component analysis used by Petroni et al., so a stronger method could still find something, but parent-reported dimensions do not seem to be reachable from these EEG features in either condition.</p>
-
-<h3 id="other-models">3.11 Ten other foundation models</h3>
-<p>LaBraM is one model, so I repeated the comparison with ten others available through Braindecode and Hugging Face: BIOT, ST-EEGFormer (small), EEGPT, REVE (base), CBraMod, EEGDINO (small), LUNA (base), SignalJEPA, CodeBrain, and BENDR. Each model received the same four 15 s eyes-closed windows per child, prepared the way its own paper describes (channel order, sampling rate, segment length, and amplitude scaling). I took the mean-pooled output of each transformer block, selected the block inside the training folds as before, and ran the same 25 nested folds. The full spectrum was recomputed from the same four windows, and every model was also run with random weights.</p>
-<div class="tbl">
-  <table>
-    <caption><b>Table 6.</b> Predicting age (n = 373, 25 nested folds). The full spectrum from the same four windows reaches R² 0.60 (0.07). p-values are from the corrected resampled t-test with Holm correction across the 11 models. "Spectrum removed" is R² after residualizing each block on the full spectrum within the training fold.</caption>
+    <caption><b>Table 1.</b> Predicting age (n = 373, 25 nested folds). The full spectrum from the same four windows reaches R² 0.60 (0.07). p-values are from the corrected resampled t-test with Holm correction across the 11 models. "Spectrum removed" is R² after residualizing each block on the full spectrum within the training fold.</caption>
     <thead><tr><th>Model</th><th class="r">R² (SD)</th><th class="r">vs. spectrum</th><th class="r">Folds better</th><th class="r">p</th><th class="r">+ spectrum</th><th class="r">Spectrum removed</th><th class="r">p</th><th class="r">Random weights</th></tr></thead>
     <tbody>
       <tr><td>BIOT</td><td class="r">0.68 (0.06)</td><td class="r">+0.07</td><td class="r">23 / 25</td><td class="r">.33</td><td class="r">0.68</td><td class="r">0.08</td><td class="r">.031</td><td class="r">0.55</td></tr>
@@ -307,14 +182,17 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
   </table>
 </div>
 <p>No model predicted age significantly better than the full spectrum, and no combination of a model with the spectrum significantly beat the spectrum alone (smallest corrected p = .056, for BIOT). Eight models came within 0.07 R² of the spectrum in either direction, and three performed much worse. For EEGPT, REVE, LaBraM, and ST-EEGFormer, pretraining mattered a great deal (pretrained minus random +0.25 to +0.53 R², all corrected p &lt; .001), but it brought them up to the spectrum rather than past it. For LUNA, EEGDINO, and CBraMod, the random-weights version already came within 0.10 R² of the pretrained one, so their architecture alone produces a representation close to the spectrum.</p>
-<p>The one exception is BIOT, which kept a small but significant amount of age information after the full spectrum was removed (R² 0.08, corrected p = .031). BIOT is also the only model here that takes a bipolar montage (differences between neighboring electrodes) and normalizes each segment's amplitude, so its input carries relationships between channels that a per-channel spectrum does not. To test this, I built two more baselines from the same windows: the spectrum of BIOT's 18 bipolar channels, and the coherence between the two electrodes in each pair (both 1 to 45 Hz at 0.5 Hz). The bipolar spectrum did not explain the leftover signal (BIOT with the bipolar spectrum removed: R² 0.09, p = .002). Removing the referential spectrum, bipolar spectrum, and coherence together reduced it to R² 0.06, which was no longer significant (20 of 25 folds above zero, p = .12). Adding BIOT to all three baselines still improved on them in 24 of 25 folds (+0.04 R², p = .014 uncorrected, .086 after Holm correction across the six comparisons in this test). The leftover signal depends on pretraining: with random weights, BIOT kept almost nothing after the spectrum was removed (R² 0.02, p = .27; pretrained vs. random p = .032). So channel relationships account for part of BIOT's extra signal, and the rest was too small to resolve with 373 children. Section 3.12 tests it on new children. BENDR's small residual (R² 0.02, p = .047) is not meaningful given its near-zero overall performance.</p>
 <p>The three weak models should be read cautiously. BENDR was no better than its random-weights version, which points to a mismatch between my preprocessing and what it expects rather than a property of the model. SignalJEPA and CodeBrain may also suffer from differences between their pretraining setup and 19-channel pediatric data. These results also use a linear readout of frozen embeddings, which recent work suggests understates what fine-tuning can reach (Yang et al., 2026).</p>
+<p>The appendix has the first version of this analysis, with LaBraM alone, including its comparison with 229 standard spectral features. LaBraM beat those features, but the full spectrum matched it, which is why the full spectrum is the baseline here.</p>
 
-<h3 id="holdout">3.12 Held-out test on 612 new children</h3>
+<h3 id="biot">3.2 BIOT keeps a signal the spectrum and connectivity miss</h3>
+<p>The exception is BIOT, which kept a small but significant amount of age information after the full spectrum was removed (R² 0.08, corrected p = .031). BIOT is also the only model here that takes a bipolar montage (differences between neighboring electrodes) and normalizes each segment's amplitude, so its input carries relationships between channels that a per-channel spectrum does not. To test this, I built two more baselines from the same windows: the spectrum of BIOT's 18 bipolar channels, and the coherence between the two electrodes in each pair (both 1 to 45 Hz at 0.5 Hz). The bipolar spectrum did not explain the leftover signal (BIOT with the bipolar spectrum removed: R² 0.09, p = .002). Removing the referential spectrum, bipolar spectrum, and coherence together reduced it to R² 0.06, which was no longer significant (20 of 25 folds above zero, p = .12). Adding BIOT to all three baselines still improved on them in 24 of 25 folds (+0.04 R², p = .014 uncorrected, .086 after Holm correction across the six comparisons in this test). The leftover signal depends on pretraining: with random weights, BIOT kept almost nothing after the spectrum was removed (R² 0.02, p = .27; pretrained vs. random p = .032). So channel relationships account for part of BIOT's extra signal, and the rest was too small to resolve with 373 children. Section 3.3 tests it on new children. BENDR's small residual (R² 0.02, p = .047) is not meaningful given its near-zero overall performance.</p>
+
+<h3 id="holdout">3.3 The BIOT result replicates in 612 new children</h3>
 <p>All the results above use cross-validation within the same 373 children. As a stricter check, I processed resting EEG from HBN releases 4 and 5 with the same pipeline and quality control (651 children with resting data, 612 kept). I fit every model on the original 373 children, with ridge penalties, layers, and residualization all chosen on those children only, and then predicted age once for the 612 new children. Confidence intervals come from 2,000 bootstrap resamples of the new children. I ran BIOT, because of its leftover signal, and LaBraM as a reference.</p>
 <div class="tbl">
   <table>
-    <caption><b>Table 7.</b> Predicting age in 612 held-out children from releases 4 and 5, using models fit on the 373 children from releases 1 to 3. "Baselines" is the referential spectrum, bipolar spectrum, and coherence together. Brackets are bootstrap 95% confidence intervals.</caption>
+    <caption><b>Table 2.</b> Predicting age in 612 held-out children from releases 4 and 5, using models fit on the 373 children from releases 1 to 3. "Baselines" is the referential spectrum, bipolar spectrum, and coherence together. Brackets are bootstrap 95% confidence intervals.</caption>
     <thead><tr><th>Features</th><th class="r">R² [95% CI]</th><th class="r">MAE (years)</th></tr></thead>
     <tbody>
       <tr><td>Full spectrum</td><td class="r">0.52 [0.45, 0.58]</td><td class="r">1.83</td></tr>
@@ -330,21 +208,59 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
   </table>
 </div>
 <p>Accuracy was lower for every feature set in the new releases (full spectrum 0.52 here vs. 0.60 in cross-validation), which likely reflects differences between releases rather than overfitting by any one model. The main finding held. Neither model was clearly better than the baselines on its own (BIOT +0.02 [−0.03, 0.08], LaBraM +0.04 [−0.02, 0.10]).</p>
-<p>BIOT's extra signal replicated. Adding pretrained BIOT to the baselines improved R² by 0.05 [0.02, 0.08], adding BIOT with random weights did not (+0.01 [−0.02, 0.03]), and the difference between the two was 0.05 [0.03, 0.07]. LaBraM added only 0.02 [0.00, 0.04], and no more than its random-weights version. Residualizing was less specific in this test, since random-weights networks also kept a small amount of age information after the baselines were removed (BIOT 0.03, LaBraM 0.08), so the combined model is the cleaner comparison here. So, at least for age and with frozen embeddings, BIOT's pretraining appears to capture a small amount of information that the spectrum and neighbor coherence do not, and LaBraM's does not. What that information is remains open. It is the obvious place to apply the sparse-autoencoder analysis I had planned for the autism question.</p>
-<p>As a first look at what the extra signal is, I removed one frequency band (band-stop filter) or one group of bipolar pairs (set to zero) from BIOT's input, re-embedded all 985 children, and repeated the held-out test. No single band carried it. Removing delta, theta, alpha, or beta each reduced the gain over the baselines from 0.05 to between 0.02 and 0.03 (each reduction's 95% CI excluded zero), while removing gamma (30 to 45 Hz) left it unchanged. Spatially, removing the five posterior pairs (ending at O1, O2, and Pz) reduced the gain to 0.03, while removing the five frontal pairs left it unchanged. Because muscle artifact is concentrated in gamma and eye artifact in frontal channels, this pattern makes artifact an unlikely source. The left and right chains differed somewhat (removing left-side chains reduced the gain slightly, right-side chains did not), but with 12 ablations and uncorrected intervals I would not read much into that asymmetry yet.</p>
+<p>BIOT's extra signal replicated. Adding pretrained BIOT to the baselines improved R² by 0.05 [0.02, 0.08], adding BIOT with random weights did not (+0.01 [−0.02, 0.03]), and the difference between the two was 0.05 [0.03, 0.07]. LaBraM added only 0.02 [0.00, 0.04], and no more than its random-weights version. Residualizing was less specific in this test, since random-weights networks also kept a small amount of age information after the baselines were removed (BIOT 0.03, LaBraM 0.08), so the combined model is the cleaner comparison here. So, at least for age and with frozen embeddings, BIOT's pretraining appears to capture a small amount of information that the spectrum and neighbor coherence do not, and LaBraM's does not. Section 3.4 takes a first look at what that information is.</p>
+
+<h3 id="ablation">3.4 BIOT's extra signal spans 1 to 30 Hz over posterior channels</h3>
+<p>To get a first look at what the extra signal is, I removed one frequency band (band-stop filter) or one group of bipolar pairs (set to zero) from BIOT's input, re-embedded all 985 children, and repeated the held-out test. No single band carried it. Removing delta, theta, alpha, or beta each reduced the gain over the baselines from 0.05 to between 0.02 and 0.03 (each reduction's 95% CI excluded zero), while removing gamma (30 to 45 Hz) left it unchanged. Spatially, removing the five posterior pairs (ending at O1, O2, and Pz) reduced the gain to 0.03, while removing the five frontal pairs left it unchanged. Because muscle artifact is concentrated in gamma and eye artifact in frontal channels, this pattern makes artifact an unlikely source. The left and right chains differed somewhat (removing left-side chains reduced the gain slightly, right-side chains did not), but with 12 ablations and uncorrected intervals I would not read much into that asymmetry yet.</p>
+<div class="tbl">
+  <table>
+    <caption><b>Table 3.</b> BIOT's held-out gain over the baselines (R² of baselines + BIOT minus R² of baselines, 612 children) after removing one frequency band or electrode group from BIOT's input. Brackets are bootstrap 95% CIs.</caption>
+    <thead><tr><th>Removed from BIOT's input</th><th class="r">Gain [95% CI]</th></tr></thead>
+    <tbody>
+      <tr><td>Nothing (full input)</td><td class="r">0.05 [0.02, 0.08]</td></tr>
+      <tr><td>Delta, 1 to 4 Hz</td><td class="r">0.02 [0.00, 0.04]</td></tr>
+      <tr><td>Theta, 4 to 8 Hz</td><td class="r">0.03 [0.01, 0.05]</td></tr>
+      <tr><td>Alpha, 8 to 13 Hz</td><td class="r">0.03 [0.00, 0.06]</td></tr>
+      <tr><td>Beta, 13 to 30 Hz</td><td class="r">0.03 [0.01, 0.06]</td></tr>
+      <tr><td>Gamma, 30 to 45 Hz</td><td class="r">0.05 [0.02, 0.07]</td></tr>
+      <tr><td>Posterior pairs (ending at O1, O2, Pz)</td><td class="r">0.03 [0.00, 0.06]</td></tr>
+      <tr><td>Frontal pairs (starting at Fp1, Fp2, Fz)</td><td class="r">0.05 [0.03, 0.07]</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 id="cbcl">3.5 Questionnaire scores were not predicted, at rest or during movies</h3>
+<p>HBN also includes parent-reported CBCL scores. For the attention factor and the p-factor, standard features, pretrained LaBraM, and random-weights LaBraM all had R² near zero with 362 participants (attention: −0.01, 0.00, and 0.00 for standard, pretrained, and random; p-factor: −0.02, −0.01, and 0.00). None of them predicted these scores from eyes-closed resting EEG. The ten other models did no better (all R² between −0.02 and 0.02).</p>
+
+<p id="movies">Resting state might simply be the wrong condition, so I repeated the analysis on the same children's EEG while they watched two short films, <i>The Present</i> (400 usable recordings) and <i>Despicable Me</i> (402). Besides the same spectral and LaBraM features, I measured neural synchrony: for each child and electrode, the correlation between their 1 to 20 Hz signal (and their alpha and theta power over time) and the average of all other children at the same moment of the film.</p>
+<div class="tbl">
+  <table>
+    <caption><b>Table 4.</b> Nested cross-validated R² on the same children (n = 323 for age, 313 for the CBCL scores). Synchrony uses 57 features (19 electrodes, three signals).</caption>
+    <thead><tr><th>Target</th><th class="r">Rest, spectrum</th><th class="r">Rest, LaBraM</th><th class="r">Movie, spectrum</th><th class="r">Movie, LaBraM</th><th class="r">Movie, synchrony</th></tr></thead>
+    <tbody>
+      <tr><td>Age</td><td class="r">0.59</td><td class="r">0.60</td><td class="r">0.57</td><td class="r">0.59</td><td class="r">0.25</td></tr>
+      <tr><td>Attention</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">0.00</td></tr>
+      <tr><td>p-factor</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">−0.01</td><td class="r">0.00</td></tr>
+      <tr><td>Internalizing</td><td class="r">−0.01</td><td class="r">0.00</td><td class="r">−0.02</td><td class="r">0.00</td><td class="r">0.01</td></tr>
+      <tr><td>Externalizing</td><td class="r">0.04</td><td class="r">0.05</td><td class="r">−0.02</td><td class="r">0.02</td><td class="r">0.00</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Movie EEG predicted age about as well as rest, and synchrony carried age information on its own (R² 0.25, and 0.19 in <i>Despicable Me</i>), consistent with Petroni et al. (2018), who found that synchrony to these films declines with age in HBN. Adding synchrony to the movie spectrum did not improve age prediction (p = .27). None of the feature sets, at rest or during either film, predicted the four CBCL scores. The one nominally significant value (rest LaBraM for externalizing, uncorrected p = .02) does not survive correction across the roughly 40 tests here. Mean synchrony was also unrelated to the CBCL scores after controlling for age and data quality (all |ρ| &lt; 0.09). My synchrony measure is simpler than the correlated component analysis used by Petroni et al., so a stronger method could still find something, but parent-reported dimensions do not seem to be reachable from these EEG features in either condition.</p>
+
 
 <h2 id="prior-work">4. Prior work on autism EEG markers</h2>
 <p>In a meta-analysis of 41 resting-state studies (Neo et al., 2023), relative alpha (lower in autism) and gamma (higher) showed the clearest pooled effects. Large samples have been less encouraging: LEAP (Garcés et al., 2022, n = 411) found no group differences after correction, and ABC-CT (Webb et al., 2023) found the face-evoked N170 to be a stronger candidate than resting measures. Carson et al. (2024) showed that selecting models for reproducibility gives more stable associations, which is why robustness is reported alongside accuracy here.</p>
 <figure>
   <div class="chart w" id="forest"></div>
-  <figcaption><b>Figure 9.</b> Resting-state power in autism vs. neurotypical groups, from Neo, Foti, Keehn &amp; Kelleher (2023). Hedges' g with 95% CIs. Black is absolute power, blue is relative power, filled markers are p &lt; .05. The relative gamma estimate is based on two studies.</figcaption>
+  <figcaption><b>Figure 4.</b> Resting-state power in autism vs. neurotypical groups, from Neo, Foti, Keehn &amp; Kelleher (2023). Hedges' g with 95% CIs. Black is absolute power, blue is relative power, filled markers are p &lt; .05. The relative gamma estimate is based on two studies.</figcaption>
 </figure>
 
 <h2 id="next">5. Next steps</h2>
-<p>For the autism question, I'm planning to use movie-watching EEG rather than resting state. HBN recorded the same participants' EEG while they watched short films, including <i>The Present</i> and <i>Despicable Me</i>. In HBN fMRI, autistic children showed lower synchrony with peers in the theory-of-mind network during a movie (Lyons et al., 2020, d = 0.93), which suggests naturalistic social stimuli may reveal differences that rest does not. Movie EEG did not help with the CBCL scores (section 3.10), but a clinical diagnosis is a different target from a parent questionnaire, so the movie recordings remain the better place to test autism.</p>
+<p>For the autism question, I'm planning to use movie-watching EEG rather than resting state. HBN recorded the same participants' EEG while they watched short films, including <i>The Present</i> and <i>Despicable Me</i>. In HBN fMRI, autistic children showed lower synchrony with peers in the theory-of-mind network during a movie (Lyons et al., 2020, d = 0.93), which suggests naturalistic social stimuli may reveal differences that rest does not. Movie EEG did not help with the CBCL scores (section 3.5), but a clinical diagnosis is a different target from a parent questionnaire, so the movie recordings remain the better place to test autism.</p>
 <ol>
-  <li><b>Strengthen the baseline further.</b> The full-spectrum comparison is done (section 3.6). Ten more foundation models are done (section 3.11). Next are connectivity and the other feature families from Tang et al. (2026), and a nonlinear readout. BIOT's extra signal replicated in held-out children (section 3.12), so the next question is what it represents, which is where sparse autoencoders come in.</li>
-  <li><b>Improve the synchrony measure.</b> The first pass is done (section 3.10). Next are correlated component analysis, the standard method in this literature, and synchrony restricted to the film's social scenes, where the fMRI difference was found.</li>
+  <li><b>Find out what BIOT learned.</b> Its extra signal survived the spectrum, connectivity, and a held-out test (sections 3.2 to 3.4). Sparse autoencoders on its embeddings, fine-tuning against the same baselines, and connectivity measures beyond neighbor coherence are the next tests.</li>
+  <li><b>Improve the synchrony measure.</b> The first pass is done (section 3.5). Next are correlated component analysis, the standard method in this literature, and synchrony restricted to the film's social scenes, where the fMRI difference was found.</li>
   <li><b>Obtain diagnostic labels.</b> HBN's clinician diagnoses, IQ, and trait measures require a data use agreement signed by a faculty sponsor.</li>
   <li><b>Test autism with the same procedure.</b> Nested cross-validation, identical held-out participants for every feature set, age, sex, IQ, site, and epilepsy as covariates, and robustness reported alongside accuracy.</li>
 </ol>
@@ -354,12 +270,119 @@ h2[id], h3[id] { scroll-margin-top: 16px; }
 <ul>
   <li><b>Age is not autism.</b> These results show that pretrained LaBraM represents developmental information in EEG about as well as the full power spectrum, and better than 229 summary features. They do not address autism.</li>
   <li><b>Linear readout only.</b> All comparisons use ridge regression. A nonlinear readout could find information in the embeddings that a linear model cannot, and connectivity, complexity, and cross-frequency measures have not been tested yet.</li>
-  <li><b>Residualization is linear and incomplete.</b> Removing standard-feature information with ridge regression leaves some shared variance and ignores nonlinear relationships, so the residual results (section 3.5) are approximate.</li>
-  <li><b>One dataset.</b> The held-out test (section 3.12) uses new children but the same study, so it does not address differences in equipment, sites, or populations. The BIOT effect is small (about 0.05 R²) and comes from one held-out comparison, and the bootstrap intervals do not account for variability from the training set.</li>
+  <li><b>Residualization is linear and incomplete.</b> Removing standard-feature information with ridge regression leaves some shared variance and ignores nonlinear relationships, so the residual results (section A.5) are approximate.</li>
+  <li><b>One dataset.</b> The held-out test (section 3.3) uses new children but the same study, so it does not address differences in equipment, sites, or populations. The BIOT effect is small (about 0.05 R²) and comes from one held-out comparison, and the bootstrap intervals do not account for variability from the training set.</li>
   <li><b>EEG brain age is well studied.</b> A foundation model pretrained on HBN itself reported higher accuracy over a wider age range (<a href="https://www.emergentmind.com/papers/2607.06629" target="_blank" rel="noopener noreferrer">STST-JEPA, 2026</a>). The contribution here is the controlled comparison against standard features and random weights.</li>
   <li><b>Frozen embeddings, few conditions.</b> Eleven models were compared without fine-tuning, on eyes-closed rest (LaBraM also on two films), with 19 channels and embeddings averaged across tokens. Preprocessing for some models, BENDR in particular, may not match their pretraining.</li>
   <li><b>Site and data quality are not yet modeled.</b> HBN spans several sites, and 32 of 405 participants were excluded for too few clean windows.</li>
 </ul>
+
+<h2 id="appendix">Appendix. The first analysis, LaBraM alone</h2>
+<p>This is the analysis that led to the comparisons above, kept for completeness. It compares pretrained LaBraM, the same architecture with random weights, and 229 standard spectral features (absolute and relative band power, aperiodic offset and exponent, alpha peak frequency), then the full spectrum.</p>
+<h3 id="age">A.1 Pretrained LaBraM predicts age more accurately</h3>
+<p>Pretrained LaBraM explained about 59% of the variance in age, compared with about 49% for standard features. Its predictions were off by 1.69 years on average, compared with 1.85 years for standard features and 2.83 years for always predicting the mean age. It also had the smallest spread across folds and the highest robustness score.</p>
+<figure>
+  <div class="chart w" id="r1"></div>
+  <figcaption><b>Figure A1.</b> Nested cross-validated R² for predicting age (mean ± SD over 25 test folds, n = 373). MAE is mean absolute error in years. Robustness R reflects how well two models trained on different participants agree when predicting the same held-out participants (not computed for the combined model).</figcaption>
+</figure>
+<div class="tbl">
+  <table>
+    <caption><b>Table A1.</b> Predicting age (n = 373), mean (SD) over 25 nested cross-validation folds.</caption>
+    <thead><tr><th>Feature set</th><th class="r">R²</th><th class="r">MAE (years)</th><th class="r">Robustness R</th></tr></thead>
+    <tbody>
+      <tr><td>Standard features</td><td class="r">0.49 (0.11)</td><td class="r">1.85 (0.16)</td><td class="r">0.41</td></tr>
+      <tr><td>LaBraM pretrained</td><td class="r">0.59 (0.09)</td><td class="r">1.69 (0.16)</td><td class="r">0.48</td></tr>
+      <tr><td>LaBraM random weights</td><td class="r">0.51 (0.07)</td><td class="r">1.91 (0.14)</td><td class="r">0.38</td></tr>
+      <tr><td>Standard + LaBraM pretrained</td><td class="r">0.61 (0.09)</td><td class="r">1.67 (0.16)</td><td class="r"></td></tr>
+      <tr><td>Predict the mean age</td><td class="r">0</td><td class="r">2.83</td><td class="r"></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 id="folds">A.2 The difference is consistent across folds</h3>
+<p>To check that the average was not driven by a few splits, I compared the feature sets fold by fold on the same test participants. Because repeated cross-validation folds overlap, the counts alone are not independent tests, so I also used the corrected resampled t-test of Nadeau &amp; Bengio (2003), which accounts for that overlap.</p>
+<figure>
+  <div class="chart w" id="waffle"></div>
+  <figcaption><b>Figure A2.</b> Each box is one test fold. A filled box means the first feature set had the higher R² on that fold. The number on the right is the median difference in R².</figcaption>
+</figure>
+<div class="tbl">
+  <table>
+    <caption><b>Table A2.</b> Paired comparisons of R² for age on the same 25 test folds. p-values are from the corrected resampled t-test, with Holm correction across the five comparisons.</caption>
+    <thead><tr><th>Comparison</th><th class="r">Mean ΔR²</th><th class="r">Folds better</th><th class="r">p</th><th class="r">p (Holm)</th></tr></thead>
+    <tbody>
+      <tr><td>Pretrained vs. standard</td><td class="r">+0.10</td><td class="r">24 / 25</td><td class="r">.013</td><td class="r">.047</td></tr>
+      <tr><td>Pretrained vs. random weights</td><td class="r">+0.09</td><td class="r">23 / 25</td><td class="r">.012</td><td class="r">.047</td></tr>
+      <tr><td>Random weights vs. standard</td><td class="r">+0.01</td><td class="r">11 / 25</td><td class="r">.75</td><td class="r">.75</td></tr>
+      <tr><td>Standard + pretrained vs. standard</td><td class="r">+0.12</td><td class="r">25 / 25</td><td class="r">.003</td><td class="r">.017</td></tr>
+      <tr><td>Standard + pretrained vs. pretrained</td><td class="r">+0.02</td><td class="r">16 / 25</td><td class="r">.48</td><td class="r">.95</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>The differences are statistically reliable but modest, and they survive correction only narrowly for the two main comparisons.</p>
+
+<h3 id="pretraining">A.3 The improvement depends on pretraining</h3>
+<p>The random-weights model produces embeddings of the same size as the pretrained one but performed about the same as the standard features. Every pretrained layer scored higher than every random-weights layer, and layers 2 to 4 were already close to the best, which suggests much of the age-related information is present early in the network.</p>
+<figure>
+  <div class="chart w" id="layerchart"></div>
+  <figcaption><b>Figure A3.</b> R² for age from each layer evaluated separately. This is not nested, so the best layer is slightly optimistic. Nested selection chose layer 3 most often (7 of 25 folds). The dashed line is the standard-feature result.</figcaption>
+</figure>
+
+<h3 id="combined">A.4 LaBraM appears to contain most of the standard-feature information</h3>
+<p>To test whether LaBraM adds information beyond the standard features, or simply re-encodes them, I fit a model on both together. Combining them beat standard features alone in all 25 folds (+0.12 R², p = .017 after correction), but it did not meaningfully beat LaBraM alone (+0.02 R², 16 of 25 folds, p = .48). In other words, the standard features add little once LaBraM is included, while LaBraM adds a lot to the standard features. This fits with Tang et al. (2026), who found that foundation-model embeddings encode much of the spectrum. Nested selection most often chose layer 8 for the combined model, compared with layer 3 for LaBraM alone.</p>
+
+<h3 id="residual">A.5 The pretraining advantage is mostly in spectral information</h3>
+<p>The combined model cannot tell whether LaBraM adds new information or just a cleaner version of the spectrum. To separate these, I removed from each embedding everything a ridge regression on the standard features could explain (fit on the training fold only) and predicted age from what was left.</p>
+<div class="tbl">
+  <table>
+    <caption><b>Table A3.</b> Predicting age from residualized features (n = 373, 25 nested folds). p tests whether R² is above zero, using the corrected resampled t-test.</caption>
+    <thead><tr><th>Features</th><th class="r">R² (SD)</th><th class="r">Folds above 0</th><th class="r">p</th></tr></thead>
+    <tbody>
+      <tr><td>Pretrained LaBraM, standard features removed</td><td class="r">0.09 (0.06)</td><td class="r">22 / 25</td><td class="r">.024</td></tr>
+      <tr><td>Random-weights LaBraM, standard features removed</td><td class="r">0.12 (0.09)</td><td class="r">22 / 25</td><td class="r">.024</td></tr>
+      <tr><td>Standard features, pretrained LaBraM removed</td><td class="r">0.17 (0.10)</td><td class="r">25 / 25</td><td class="r">.005</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Both pretrained and random-weights embeddings kept a small amount of age information after the standard features were removed, and the two did not differ (pretrained minus random: −0.03 R², 8 of 25 folds, p = .45). So the leftover signal does not depend on pretraining. It is more likely detail that any convolutional projection of the raw signal picks up and that 229 summary features miss. Since pretrained LaBraM beats random weights by about 0.09 R² overall but not on the residuals, the pretraining advantage appears to sit in the part shared with the standard features. A reasonable reading is that pretraining makes spectral information easier to read out linearly, rather than adding new kinds of information. This is close to the "better spectral estimator" explanation I wanted to rule in or out.</p>
+<p>The third row should be read cautiously. Ridge residualization removes only part of the explainable variance, so some shared information remains in every residual. That likely explains why standard features keep R² = 0.17 after removing LaBraM even though adding them to LaBraM barely helped (section A.4). Section A.6 runs a more direct test.</p>
+
+<h3 id="full-spectrum">A.6 The full spectrum matches LaBraM</h3>
+<p>The most direct test of the "better spectral reader" explanation is to give the linear model the full power spectrum instead of 229 summaries: the log power at every half-hertz from 1 to 45 Hz on all 19 channels (1,691 values per child), from the same cleaned windows. I reprocessed all 373 children for this and used the same 25 nested folds.</p>
+<div class="tbl">
+  <table>
+    <caption><b>Table A4.</b> Predicting age with the full power spectrum (n = 373, 25 nested folds). p-values are from the corrected resampled t-test.</caption>
+    <thead><tr><th>Features</th><th class="r">R² (SD)</th><th class="r">MAE (years)</th></tr></thead>
+    <tbody>
+      <tr><td>Standard features (229)</td><td class="r">0.51 (0.11)</td><td class="r">1.82</td></tr>
+      <tr><td>Full spectrum (1,691)</td><td class="r">0.60 (0.07)</td><td class="r">1.70</td></tr>
+      <tr><td>LaBraM pretrained</td><td class="r">0.59 (0.09)</td><td class="r">1.69</td></tr>
+      <tr><td>Full spectrum + LaBraM pretrained</td><td class="r">0.65 (0.06)</td><td class="r">1.59</td></tr>
+      <tr><td>LaBraM, full spectrum removed</td><td class="r">0.04 (0.05)</td><td class="r"></td></tr>
+      <tr><td>Full spectrum, LaBraM removed</td><td class="r">0.33 (0.18)</td><td class="r"></td></tr>
+    </tbody>
+  </table>
+</div>
+<p>The full spectrum beat the standard features in all 25 folds (+0.09 R², p = .012) and performed the same as LaBraM (LaBraM better in 10 of 25 folds, p = .90). After removing what the full spectrum explains, LaBraM's embeddings kept almost no age information (R² 0.04, 20 of 25 folds above zero, p = .14). The reverse was not true: the full spectrum kept substantial age information after removing what LaBraM explains (R² 0.33, p = .004), though incomplete ridge residualization inflates this number, as in section A.5. Combining the two did slightly better than either alone (0.65; vs. full spectrum p = .027, vs. LaBraM p = .083), so LaBraM may add a small amount, but most of what it carries about age is already in the spectrum.</p>
+<p>Together with section A.5, this answers the question I started with, at least for age and a linear readout. Pretrained LaBraM looks like a good reader of the EEG spectrum. Its advantage over the usual 229 features comes from those features discarding spectral detail, and the same advantage is available without a foundation model. This matches Tang et al. (2026). Standard features scored 0.51 in this rerun rather than 0.49, from a small difference in standard-feature extraction between computing environments; the LaBraM embeddings were identical.</p>
+
+<h3 id="sample-size">A.7 The difference appeared with a larger sample</h3>
+<p>With release 1 alone (123 participants), the three feature sets performed similarly, and individual recordings had a large effect on single folds. With releases 1 to 3, pretrained LaBraM improved while the other two stayed about the same. This is a reminder that results from smaller samples should be treated cautiously, and I plan to check the result again as more releases are added.</p>
+<figure>
+  <div class="chart w" id="slope"></div>
+  <figcaption><b>Figure A4.</b> Same pipeline and evaluation with 123 and with 373 participants.</figcaption>
+</figure>
+
+<h3 id="development">A.8 Known developmental changes show up in the data</h3>
+<p>Two well-established developmental changes appear in this sample: alpha peak frequency increases with age and the aperiodic exponent decreases. The LaBraM embeddings also show an age gradient without being trained on age.</p>
+<figure>
+  <div class="two">
+    <div class="chart" id="scatter-apf"></div>
+    <div class="chart" id="scatter-aper"></div>
+  </div>
+  <div class="chart" id="pca" style="margin-top:12px"></div>
+  <figcaption><b>Figure A5.</b> Release 1 only (n = 123). <b>(a)</b> Alpha peak frequency vs. age. <b>(b)</b> Aperiodic exponent vs. age. <b>(c, d)</b> Each participant's layer-3 embedding projected onto its first two principal components, colored by age (light = 5, dark = 21). One component correlates with age in each (Spearman ρ = 0.68 pretrained, 0.55 random). These plots are descriptive. The cross-validated results in Figure A1 are the main test.</figcaption>
+</figure>
+
 
 <h2 id="references">References</h2>
 <ol class="refs">
@@ -430,7 +453,7 @@ const fg = (node, v) => { node.style.fill = v; return node; };
 const sk = (node, v) => { node.style.stroke = v; return node; };
 
 
-/* Figure 2: eleven foundation models vs. the full spectrum */
+/* Figure 1: eleven foundation models vs. the full spectrum */
 (function fm() {
   const D = [["BIOT",0.676,0.062,0.550],["ST-EEGFormer",0.651,0.080,0.403],["EEGPT",0.626,0.058,0.242],["REVE",0.625,0.066,0.093],["CBraMod",0.620,0.053,0.523],["EEGDINO",0.603,0.074,0.534],["LaBraM",0.597,0.082,0.168],["LUNA",0.547,0.099,0.535],["SignalJEPA",0.219,0.084,0.307],["CodeBrain",0.204,0.094,0.267],["BENDR",0.049,0.039,0.078]];
   const SPEC = [0.604, 0.068];
@@ -460,7 +483,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   const lr = el("circle", { cx: lx + 100, cy: ly - 4, r: 4.5, "stroke-width": 1.6 }, svg); fg(lr, "var(--bg)"); sk(lr, "var(--rand)"); txt(svg, lx + 110, ly, "random weights", { "font-size": 12 });
 })();
 
-/* Figure 1: static EEG page, like a printout */
+/* Figure 2: static EEG page, like a printout */
 (function eeg() {
   const cv = document.getElementById("eeg"), ctx = cv.getContext("2d");
   const data = HERO.data, chans = HERO.channels, fs = HERO.sfreq;
@@ -496,7 +519,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 })();
 
-/* Figure 4: dot + whisker, age */
+/* Figure A1: dot + whisker, age */
 (function r1() {
   const W = 700, H = 244, L = 170, Rm = 150, T = 24, B = 40;
   const svg = svgRoot(document.getElementById("r1"), W, H, "R squared predicting age for four feature sets");
@@ -523,7 +546,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   });
 })();
 
-/* Figure 5: fold wins */
+/* Figure A2: fold wins */
 (function waffle() {
   const rows = [
     ["pre", 24, 0.107, "Pretrained vs. standard"],
@@ -546,7 +569,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   txt(svg, W, H - 4, "median ΔR²", { "font-size": 11.5, "text-anchor": "end" });
 })();
 
-/* Figure 6: layers */
+/* Figure A3: layers */
 (function layers() {
   const W = 700, H = 300, L = 50, Rm = 12, T = 14, B = 44;
   const svg = svgRoot(document.getElementById("layerchart"), W, H, "R squared predicting age at each of 12 LaBraM layers, pretrained versus random weights");
@@ -573,7 +596,7 @@ const sk = (node, v) => { node.style.stroke = v; return node; };
   fg(txt(svg, x(10), y(0.522) - 10, "random weights", { "text-anchor": "middle", "font-size": 12.5 }), "var(--rand)");
 })();
 
-/* Figure 7: slope */
+/* Figure A4: slope */
 (function slope() {
   const d = { std: [0.498, 0.494], pre: [0.487, 0.594], rand: [0.465, 0.506] };
   const W = 700, H = 280, T = 24, B = 40, x0 = 240, x1 = 460;
@@ -645,7 +668,7 @@ scatter("scatter-aper", "aper", "(b)");
   });
 })();
 
-/* Figure 9: forest */
+/* Figure 4: forest */
 (function forest() {
   const d = [
     ["Delta", [0.06, -0.23, 0.34, 0], [0.10, -0.26, 0.45, 0]],
